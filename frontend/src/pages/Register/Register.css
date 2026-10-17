@@ -1,0 +1,86 @@
+.registerPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #EDEDED;
+  background-image: url('../../assets/RegistrationBackground.svg');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+}
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100% - 32px, 557px);
+  background-color: #FFFFFF;
+  border-radius: 45px;
+  padding: 32px;
+}
+.registerTitle{
+  padding-bottom: 13px;
+}
+.registerDescription{
+  color: #5E5E5E;
+}
+.registerFormFields{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 19px;
+  padding: 32px 52px 19px 52px;
+}
+.registerButton{
+  width: 100%;
+  padding: 20px ;
+  border-radius: 15px;
+  border: none;
+  font-size: 20px;
+  color: #646464;
+  background-color: #F0F0F0;
+}
+.registerFooter{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.registerFooterButton{
+  padding: 11px 64px;
+  border-radius: 15px;
+  border: none;
+  background-color: #3D3D3D;
+  color: #FFFFFF;
+}
+.registerFooterButton:hover{
+  background-color: #292929;
+}
+.registerFooterButton:active{
+  background-color: #030303;
+}
+@media (max-width: 600px) {
+  .registerForm {
+    padding: 24px;
+    border-radius: 28px;
+  }
+
+  .registerFormFields {
+    padding: 24px 16px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .registerForm {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .registerFormFields {
+    padding: 20px 4px;
+    gap: 16px;
+  }
+}
