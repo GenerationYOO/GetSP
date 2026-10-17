@@ -4,6 +4,7 @@ import emailIcon from '../../assets/icons/envelope.svg'
 import passwordIcon from '../../assets/icons/lock.svg'
 import eyeIcon from '../../assets/icons/eye.svg'
 import eyeSlashIcon from '../../assets/icons/eyeOff.svg'
+import { Checkbox } from '../../components/Checkbox/Checkbox'
 
 export function Login() {
   return (
@@ -27,6 +28,10 @@ export function Login() {
             rightIcon={eyeIcon}
             rightIconActive={eyeSlashIcon}
           />
+          <div className="loginFormCheckbox">
+            <Checkbox />
+            <label htmlFor="checkbox">Запомнить меня</label>
+          </div>
         </form>
       </div>
     </div>
