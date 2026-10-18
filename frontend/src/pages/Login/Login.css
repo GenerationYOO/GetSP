@@ -40,6 +40,9 @@
   align-self: flex-start;
   gap: 6px;
 }
+.loginFormCheckbox label {
+  user-select: none;
+}
 .loginFormCheckbox:hover label {
   text-decoration: underline;
 }
