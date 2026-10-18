@@ -50,14 +50,30 @@
   background-color: transparent;
   cursor: pointer;
 }
-.inputDescription{
-  color: #585858;
+.inputMessage {
   font-size: 12px;
+}
+.inputMessage.hasError {
+  min-height: 19px;
+}
+.inputError {
+  min-height: 15px;
+  margin: 0;
+  color: #FF0000;
+  line-height: 15px;
+  visibility: hidden;
+}
+.inputError.isVisible {
+  visibility: visible;
+}
+.inputDescription {
+  margin: 0;
   padding-top: 9px;
+  color: #585858;
+  line-height: 15px;
 }
 input[type="password"] {
   font-size: 10px;
-
 }
 .inputField:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px white inset;

@@ -13,6 +13,7 @@ type Props = {
   rightIcon?: string;
   rightIconActive?: string;
   description?: string;
+  error?: string;
 };
 export function InputRegisterForm(props: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -22,28 +23,38 @@ export function InputRegisterForm(props: Props) {
       <div className='inputWrapper'>
         <img className='inputLeftIcon' src={props.leftIcon} alt="left icon" />
 
-        <input className='inputField' 
+        <input className='inputField'
           type={props.type === 'password'
             ? (isPasswordVisible ? 'text' : 'password')
-            : props.type} 
-          placeholder={props.placeholder} 
-          value={props.value} 
+            : props.type}
+          placeholder={props.placeholder}
+          value={props.value}
           onChange={(e) => props.onChange?.(e.target.value)}>
-        
+
         </input>
         {props.rightIcon && (
-          <button 
-            className='inputRightIconButton' 
+          <button
+            className='inputRightIconButton'
             type="button"
             onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
-            <img className='inputRightIcon' 
-              src={isPasswordVisible ? props.rightIconActive : props.rightIcon} 
+            <img className='inputRightIcon'
+              src={isPasswordVisible ? props.rightIconActive : props.rightIcon}
               alt="right icon" />
           </button>
         )}
       </div>
-      
-      <p className='inputDescription'>{props.description}</p>
+      <div
+        className={`inputMessage ${props.description ? 'hasDescription' : 'hasError'
+          }`}
+      >
+        {props.description ? (
+          <p className="inputDescription">{props.description}</p>
+        ) : (
+          <p className={`inputError ${props.error ? 'isVisible' : ''}`}>
+            {props.error || '\u00A0'}
+          </p>
+        )}
+      </div>
     </div>
   )
 }

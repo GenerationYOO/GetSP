@@ -6,10 +6,45 @@ import passwordIcon from '../../assets/icons/lock.svg'
 import eyeIcon from '../../assets/icons/eye.svg'
 import eyeSlashIcon from '../../assets/icons/eyeOff.svg'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
-
+type RegisterFormData = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+type RegisterFormErrors = {
+  name?: string;
+  email?: string;
+  password?: string;
+};
 export function Register() {
   const navigate = useNavigate()
+  const [formData, setFormData] = useState<RegisterFormData>({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
+  const [errors, setErrors] = useState<RegisterFormErrors>({});
+
+  function validateForm() {
+    const newErrors: RegisterFormErrors = {};
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.password = 'Пароли не совпадают';
+    }
+    if(formData.password.length < 8) {
+      newErrors.password = 'Минимальная длина пароля - 8';
+    }
+    if(!formData.name) {
+      newErrors.name = 'Введите ваше имя';
+    }
+    if(!formData.email) {
+      newErrors.email = 'Введите вашу электронную почту';
+    }
+    setErrors(newErrors);
+  }
   return (
     <div className="registerPage">
       <div className="registerForm">
@@ -20,15 +55,25 @@ export function Register() {
         <form className="registerFormFields">
           <InputRegisterForm
             title="Ваше имя"
-            type="text"
+            type="name"
             placeholder="Иванов Иван"
             leftIcon={userIcon}
+            onChange={(value) => setFormData(prev => ({
+              ...prev,
+              name: value
+            }))}
+            error={errors.name}
           />
           <InputRegisterForm
             title="Электронная почта"
             type="email"
             placeholder="name@example.com"
             leftIcon={emailIcon}
+            onChange={(value) => setFormData(prev => ({
+              ...prev,
+              email: value
+            }))}
+            error={errors.email}
           />
           <InputRegisterForm
             title="Пароль"
@@ -37,6 +82,11 @@ export function Register() {
             leftIcon={passwordIcon}
             rightIcon={eyeIcon}
             rightIconActive={eyeSlashIcon}
+            onChange={(value) => setFormData(prev => ({
+              ...prev,
+              password: value
+            }))}
+            error={errors.password}
           />
           <InputRegisterForm
             title="Повторите пароль"
@@ -45,12 +95,20 @@ export function Register() {
             leftIcon={passwordIcon}
             rightIcon={eyeIcon}
             rightIconActive={eyeSlashIcon}
+            onChange={(value) => setFormData(prev => ({
+              ...prev,
+              confirmPassword: value
+            }))}
             description='Минимальная длина пароля - 8'
           />
-          <button className="registerButton">Зарегистрироваться</button>
+          <button 
+            type="button"
+            className="registerButton" 
+            onClick={validateForm}>
+              Зарегистрироваться</button>
         </form>
         <div className="registerFooter">
-          <p>Уже есть аккаунт?</p>
+          <p className="registerFooterDescription">Уже есть аккаунт?</p>
           <button onClick={() => navigate("/login")} className="registerFooterButton">
             Войти
           </button>
