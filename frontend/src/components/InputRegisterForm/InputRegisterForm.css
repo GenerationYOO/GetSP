@@ -3,6 +3,7 @@
   font-size: 18px;
   font-weight: 400;
   padding-bottom: 12px;
+  cursor: default;
 }
 .inputWrapper{
   position: relative;
