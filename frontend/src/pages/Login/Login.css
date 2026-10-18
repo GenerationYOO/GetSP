@@ -27,12 +27,53 @@
 .loginFormDescription{
   color: #5E5E5E;
   font-size: 18px;
-  font-weight: 400;
 }
 .loginFormFields{
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 19px;
   padding: 32px 52px 19px 52px;
+}
+.loginFormCheckbox{
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+}
+.loginFormCheckbox:hover label {
+  text-decoration: underline;
+}
+.loginButton{
+  width: 100%;
+  margin-top: 19px;
+  padding: 20px;
+  border-radius: 15px;
+  border: none;
+  font-size: 20px;
+  color: #646464;
+  background-color: #F0F0F0;
+}
+.loginFooter{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+.loginFooterDescription{
+  color: #000000;
+  font-size: 18px;
+}
+.loginFooterButton{
+  padding: 11px 32px;
+  border-radius: 15px;
+  border: none;
+  background-color: #3D3D3D;
+  color: #FFFFFF;
+}
+.loginFooterButton:hover{
+  background-color: #292929;
+}
+.loginFooterButton:active{
+  background-color: #030303;
 }
