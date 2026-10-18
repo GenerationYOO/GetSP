@@ -37,6 +37,9 @@ export function Register() {
     if(formData.password.length < 8) {
       newErrors.password = 'Минимальная длина пароля - 8';
     }
+    if(!formData.password) {
+      newErrors.password = 'Введите ваш пароль';
+    }
     if(!formData.name) {
       newErrors.name = 'Введите ваше имя';
     }
