@@ -42,19 +42,6 @@
   color: #000000;
   font-size: 18px;
 }
-.registerFooterButton{
-  padding: 11px 64px;
-  border-radius: 15px;
-  border: none;
-  background-color: #3D3D3D;
-  color: #FFFFFF;
-}
-.registerFooterButton:hover{
-  background-color: #292929;
-}
-.registerFooterButton:active{
-  background-color: #030303;
-}
 @media (max-width: 600px) {
   .registerForm {
     padding: 24px;

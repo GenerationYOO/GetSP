@@ -57,16 +57,3 @@
   color: #000000;
   font-size: 18px;
 }
-.loginFooterButton{
-  padding: 11px 32px;
-  border-radius: 15px;
-  border: none;
-  background-color: #3D3D3D;
-  color: #FFFFFF;
-}
-.loginFooterButton:hover{
-  background-color: #292929;
-}
-.loginFooterButton:active{
-  background-color: #030303;
-}

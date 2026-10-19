@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { loginUser } from '../../api/login'
 import { AuthButton } from '../../components/AuthButton/AuthButton'
+import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
 
 type LoginFormData = {
   email: string;
@@ -105,10 +106,10 @@ export function Login() {
         </form>
         <div className="loginFooter">
           <p className="loginFooterDescription">Еще нет аккаунта?</p>
-          <button 
-            className="loginFooterButton"
+          <AuthSwitch 
+            text="Регистрация"
             onClick={() => navigate("/register")}
-            >Регистрация</button>
+          />
         </div>
         
       </div>
