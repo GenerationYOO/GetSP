@@ -7,6 +7,7 @@ import eyeIcon from '../../assets/icons/eye.svg'
 import eyeSlashIcon from '../../assets/icons/eyeOff.svg'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { registerUser } from '../../api/register'
 
 type RegisterFormData = {
   name: string;
@@ -19,6 +20,7 @@ type RegisterFormErrors = {
   email?: string;
   password?: string;
 };
+
 export function Register() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState<RegisterFormData>({
@@ -34,20 +36,36 @@ export function Register() {
     if (formData.password !== formData.confirmPassword) {
       newErrors.password = 'Пароли не совпадают';
     }
-    if(formData.password.length < 8) {
+    if (formData.password.length < 8) {
       newErrors.password = 'Минимальная длина пароля - 8';
     }
-    if(!formData.password) {
+    if (!formData.password) {
       newErrors.password = 'Введите ваш пароль';
     }
-    if(!formData.name) {
+    if (!formData.name) {
       newErrors.name = 'Введите ваше имя';
     }
-    if(!formData.email) {
+    if (!formData.email) {
       newErrors.email = 'Введите вашу электронную почту';
     }
     setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   }
+
+  async function handleRegister() {
+    const isValid = validateForm();
+
+    if (isValid) {
+      try {
+        await registerUser(formData.name, formData.email, formData.password);
+        navigate('/login');
+      } catch (error) {
+        console.error('Ошибка при регистрации:', error);
+      }
+    }
+  }
+
   return (
     <div className="registerPage">
       <div className="registerForm">
@@ -104,11 +122,13 @@ export function Register() {
             }))}
             description='Минимальная длина пароля - 8'
           />
-          <button 
+          <button
             type="button"
-            className="registerButton" 
-            onClick={validateForm}>
-              Зарегистрироваться</button>
+            className="registerButton"
+            onClick={handleRegister}
+          >
+            Зарегистрироваться
+          </button>
         </form>
         <div className="registerFooter">
           <p className="registerFooterDescription">Уже есть аккаунт?</p>
