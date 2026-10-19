@@ -7,6 +7,7 @@ import eyeSlashIcon from '../../assets/icons/eyeOff.svg'
 import { Checkbox } from '../../components/Checkbox/Checkbox'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { loginUser } from '../../api/login'
 
 type LoginFormData = {
   email: string;
@@ -36,6 +37,20 @@ export function Login() {
         ...prev,
         password: 'Введите ваш пароль'
       }))
+    }
+    return Object.keys(errors).length === 0;
+  }
+
+  async function loginHandler() {
+    const isValid = validateForm();
+
+    if (isValid) {
+      try {
+        await loginUser(formData.email, formData.password);
+        navigate('/home');
+      } catch (error) {
+        console.error('Ошибка при входе:', error);
+      }
     }
   }
 
@@ -77,7 +92,7 @@ export function Login() {
           <button
             type="button"
             className="loginButton"
-            onClick={validateForm}>
+            onClick={loginHandler}>
               Войти</button>
         </form>
         <div className="loginFooter">
