@@ -8,6 +8,7 @@ import eyeSlashIcon from '../../assets/icons/eyeOff.svg'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { registerUser } from '../../api/register'
+import { AuthButton } from '../../components/AuthButton/AuthButton'
 
 type RegisterFormData = {
   name: string;
@@ -122,13 +123,10 @@ export function Register() {
             }))}
             description='Минимальная длина пароля - 8'
           />
-          <button
-            type="button"
-            className="registerButton"
+          <AuthButton 
+            text="Зарегистрироваться"
             onClick={handleRegister}
-          >
-            Зарегистрироваться
-          </button>
+          />
         </form>
         <div className="registerFooter">
           <p className="registerFooterDescription">Уже есть аккаунт?</p>

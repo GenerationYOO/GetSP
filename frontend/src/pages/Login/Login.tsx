@@ -8,6 +8,7 @@ import { Checkbox } from '../../components/Checkbox/Checkbox'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { loginUser } from '../../api/login'
+import { AuthButton } from '../../components/AuthButton/AuthButton'
 
 type LoginFormData = {
   email: string;
@@ -97,11 +98,10 @@ export function Login() {
             />
             <label htmlFor="checkbox">Запомнить меня</label>
           </div>
-          <button
-            type="button"
-            className="loginButton"
-            onClick={loginHandler}>
-              Войти</button>
+          <AuthButton 
+            text="Войти"
+            onClick={loginHandler}
+          />
         </form>
         <div className="loginFooter">
           <p className="loginFooterDescription">Еще нет аккаунта?</p>
