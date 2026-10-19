@@ -12,6 +12,7 @@ import { loginUser } from '../../api/login'
 type LoginFormData = {
   email: string;
   password: string;
+  rememberMe: boolean;
 };
 type LoginFormErrors = {
   email?: string;
@@ -22,6 +23,7 @@ export function Login() {
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
+    rememberMe: false
   })
   const [errors, setErrors] = useState<LoginFormErrors>({});
 
@@ -46,7 +48,7 @@ export function Login() {
 
     if (isValid) {
       try {
-        await loginUser(formData.email, formData.password);
+        await loginUser(formData.email, formData.password, formData.rememberMe);
         navigate('/home');
       } catch (error) {
         console.error('Ошибка при входе:', error);
@@ -86,7 +88,13 @@ export function Login() {
             error={errors.password}
           />
           <div className="loginFormCheckbox">
-            <Checkbox />
+            <Checkbox 
+              checked={formData.rememberMe}
+              onChange={(checked) => setFormData(prev => ({
+                ...prev,
+                rememberMe: checked
+              }))}
+            />
             <label htmlFor="checkbox">Запомнить меня</label>
           </div>
           <button
