@@ -41,6 +41,9 @@
   outline: none;
   border-color: #000000;
 }
+.inputField.hasError{
+  border-color: #FF0000;
+}
 .inputRightIconButton{
   position: absolute;
   right: 0;

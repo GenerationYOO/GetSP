@@ -18,12 +18,12 @@ type Props = {
 export function InputRegisterForm(props: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   return (
-    <div className="inputRegisterForm">
+    <div className={"inputRegisterForm"}>
       <h3 className='inputTitle'>{props.title.toUpperCase()}</h3>
       <div className='inputWrapper'>
         <img className='inputLeftIcon' src={props.leftIcon} alt="left icon" />
 
-        <input className='inputField'
+        <input className={`inputField ${props.error ? 'hasError' : ''}`}
           type={props.type === 'password'
             ? (isPasswordVisible ? 'text' : 'password')
             : props.type}
@@ -44,8 +44,7 @@ export function InputRegisterForm(props: Props) {
         )}
       </div>
       <div
-        className={`inputMessage ${props.description ? 'hasDescription' : 'hasError'
-          }`}
+        className={`inputMessage ${props.description ? 'hasDescription' : 'hasError'}`}
       >
         {props.description ? (
           <p className="inputDescription">{props.description}</p>
