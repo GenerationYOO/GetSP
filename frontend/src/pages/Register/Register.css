@@ -16,7 +16,7 @@
   align-items: center;
   width: min(100% - 32px, 557px);
   background-color: #FFFFFF;
-  border-radius: 45px;
+  border-radius: 23px;
   padding: 32px;
 }
 .registerTitle{
@@ -45,7 +45,6 @@
 @media (max-width: 600px) {
   .registerForm {
     padding: 24px;
-    border-radius: 28px;
   }
 
   .registerFormFields {
