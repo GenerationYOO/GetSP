@@ -55,7 +55,8 @@ export function Register() {
     return Object.keys(newErrors).length === 0;
   }
 
-  async function handleRegister() {
+  async function handleRegister(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     const isValid = validateForm();
 
     if (isValid) {
@@ -75,7 +76,7 @@ export function Register() {
         <h2 className="registerTitle">Регистрация</h2>
         <p className="registerDescription">Создание нового аккаунта</p>
 
-        <form className="registerFormFields">
+        <form className="registerFormFields" onSubmit={handleRegister}>
           <InputRegisterForm
             title="Ваше имя"
             type="name"
@@ -124,14 +125,13 @@ export function Register() {
             }))}
             description='Минимальная длина пароля - 8'
           />
-          <AuthButton 
+          <AuthButton
             text="Зарегистрироваться"
-            onClick={handleRegister}
           />
         </form>
         <div className="registerFooter">
           <p className="registerFooterDescription">Уже есть аккаунт?</p>
-          <AuthSwitch 
+          <AuthSwitch
             text="Войти"
             onClick={() => navigate("/login")}
           />

@@ -45,7 +45,8 @@ export function Login() {
     return Object.keys(errors).length === 0;
   }
 
-  async function loginHandler() {
+  async function loginHandler(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     const isValid = validateForm();
 
     if (isValid) {
@@ -64,7 +65,7 @@ export function Login() {
         <h2 className="loginFormTitle">Добро пожаловать</h2>
         <p className="loginFormDescription">Войдите в свою учетную запись</p>
 
-        <form className="loginFormFields">
+        <form className="loginFormFields" onSubmit={loginHandler}>
           <InputRegisterForm
             title="Электронная почта"
             type="email"
@@ -101,7 +102,6 @@ export function Login() {
           </div>
           <AuthButton 
             text="Войти"
-            onClick={loginHandler}
           />
         </form>
         <div className="loginFooter">
