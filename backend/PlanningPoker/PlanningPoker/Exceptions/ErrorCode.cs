@@ -1,6 +1,12 @@
 ﻿namespace PlanningPoker.Exceptions
 {
-    public class TypeCode
+    public enum ErrorCode
     {
+        ValidationError,
+        EmailAlreadyExists,
+        InvalidCredentials,
+        UserNotFound,
+        TokenExpired,
+        TokenInvalid
     }
 }
