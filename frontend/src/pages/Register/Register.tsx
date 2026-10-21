@@ -32,6 +32,10 @@ export function Register() {
     confirmPassword: ''
   })
   const [errors, setErrors] = useState<RegisterFormErrors>({});
+  const registerButtonDisabled = !formData.name 
+      || !formData.email 
+      || !formData.password 
+      || !formData.confirmPassword;
 
   function validateForm() {
     const newErrors: RegisterFormErrors = {};
@@ -126,6 +130,7 @@ export function Register() {
             description='Минимальная длина пароля - 8'
           />
           <AuthButton
+            disabled={registerButtonDisabled}
             text="Зарегистрироваться"
           />
         </form>

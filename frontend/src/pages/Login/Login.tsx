@@ -28,6 +28,7 @@ export function Login() {
     rememberMe: false
   })
   const [errors, setErrors] = useState<LoginFormErrors>({});
+  const loginButtonDisabled = !formData.email || !formData.password;
 
   function validateForm() {
     const newErrors: LoginFormErrors = {};
@@ -99,6 +100,7 @@ export function Login() {
             <label htmlFor="checkbox">Запомнить меня</label>
           </div>
           <AuthButton
+            disabled={loginButtonDisabled}
             text="Войти"
           />
         </form>

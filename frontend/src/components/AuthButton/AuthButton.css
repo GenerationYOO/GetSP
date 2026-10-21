@@ -1,4 +1,4 @@
-.authButton{
+.authButton.isDisabled {
   width: 100%;
   padding: 20px ;
   margin-top: 19px;
@@ -7,4 +7,20 @@
   font-size: 20px;
   color: #646464;
   background-color: #F0F0F0;
+}
+.authButton {
+  width: 100%;
+  padding: 20px ;
+  margin-top: 19px;
+  border-radius: 15px;
+  border: none;
+  font-size: 20px;
+  color: #FFFFFF;
+  background-color: #3D3D3D;
+}
+.authButton:hover {
+  background-color: #292929;
+}
+.authButton:active {
+  background-color: #030303;
 }
