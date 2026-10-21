@@ -30,18 +30,16 @@ export function Login() {
   const [errors, setErrors] = useState<LoginFormErrors>({});
 
   function validateForm() {
-    if(!formData.email) {
-      setErrors(prev => ({
-        ...prev,
-        email: 'Введите вашу электронную почту'
-      }))
+    const newErrors: LoginFormErrors = {};
+    if (!formData.email) {
+      newErrors.email = 'Введите вашу электронную почту';
     }
-    if(!formData.password) {
-      setErrors(prev => ({
-        ...prev,
-        password: 'Введите ваш пароль'
-      }))
+    if (!formData.password) {
+      newErrors.password = 'Введите ваш пароль';
     }
+
+    setErrors(newErrors);
+
     return Object.keys(errors).length === 0;
   }
 
@@ -91,7 +89,7 @@ export function Login() {
             error={errors.password}
           />
           <div className="loginFormCheckbox">
-            <Checkbox 
+            <Checkbox
               checked={formData.rememberMe}
               onChange={(checked) => setFormData(prev => ({
                 ...prev,
@@ -100,18 +98,18 @@ export function Login() {
             />
             <label htmlFor="checkbox">Запомнить меня</label>
           </div>
-          <AuthButton 
+          <AuthButton
             text="Войти"
           />
         </form>
         <div className="loginFooter">
           <p className="loginFooterDescription">Еще нет аккаунта?</p>
-          <AuthSwitch 
+          <AuthSwitch
             text="Регистрация"
             onClick={() => navigate("/register")}
           />
         </div>
-        
+
       </div>
     </div>
   )
