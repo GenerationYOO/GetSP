@@ -14,6 +14,7 @@ type Props = {
   rightIconActive?: string;
   description?: string;
   error?: string;
+  onBlur?: () => void;
 };
 export function InputRegisterForm(props: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -29,7 +30,9 @@ export function InputRegisterForm(props: Props) {
             : props.type}
           placeholder={props.placeholder}
           value={props.value}
-          onChange={(e) => props.onChange?.(e.target.value)}>
+          onChange={(e) => props.onChange?.(e.target.value)}
+          onBlur={props.onBlur}
+          >
 
         </input>
         {props.rightIcon && (

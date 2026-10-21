@@ -28,20 +28,24 @@ export function Login() {
     rememberMe: false
   })
   const [errors, setErrors] = useState<LoginFormErrors>({});
-  const loginButtonDisabled = !formData.email || !formData.password;
+
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false
+  })
 
   function validateForm() {
     const newErrors: LoginFormErrors = {};
-    if (!formData.email) {
+    if (!formData.email.trim()) {
       newErrors.email = 'Введите вашу электронную почту';
     }
-    if (!formData.password) {
+    if (!formData.password.trim()) {
       newErrors.password = 'Введите ваш пароль';
     }
 
     setErrors(newErrors);
 
-    return Object.keys(errors).length === 0;
+    return Object.keys(newErrors).length === 0;
   }
 
   async function loginHandler(event: React.FormEvent<HTMLFormElement>) {
@@ -68,26 +72,73 @@ export function Login() {
           <InputRegisterForm
             title="Электронная почта"
             type="email"
+            value={formData.email}
             placeholder="name@example.com"
             leftIcon={emailIcon}
-            onChange={(value) => setFormData(prev => ({
-              ...prev,
-              email: value
-            }))}
+            onChange={(value) => {
+              setFormData(prev => ({
+                ...prev,
+                email: value
+              }));
+              if(value.trim() && touched.email) {
+                setErrors(prev => ({
+                  ...prev,
+                  email: ''
+                }));
+              }
+            }
+            }
             error={errors.email}
+            onBlur={() => {
+              setTouched(prev => ({
+                ...prev,
+                email: true
+              }));
+
+              if (!formData.email.trim()) {
+                setErrors(prev => ({
+                  ...prev,
+                  email: 'Введите вашу электронную почту'
+                }));
+              }
+            }}
           />
           <InputRegisterForm
             title="Пароль"
             type="password"
             placeholder="• • • • • • • •"
             leftIcon={passwordIcon}
+            value={formData.password}
             rightIcon={eyeIcon}
             rightIconActive={eyeSlashIcon}
-            onChange={(value) => setFormData(prev => ({
-              ...prev,
-              password: value
-            }))}
+            onChange={(value) => {
+              setFormData(prev => ({
+                ...prev,
+                password: value
+              }))
+              if (value.trim() && touched.password) {
+                setErrors(prev => ({
+                  ...prev,
+                  password: ''
+                }));
+              }
+            }
+            }
             error={errors.password}
+            onBlur={
+              () => {
+                setTouched(prev => ({
+                  ...prev,
+                  password: true
+                }));
+                if (!formData.password.trim()) {
+                  setErrors(prev => ({
+                    ...prev,
+                    password: 'Введите ваш пароль'
+                  }));
+                }
+              }
+            }
           />
           <div className="loginFormCheckbox">
             <Checkbox
@@ -100,7 +151,6 @@ export function Login() {
             <label htmlFor="checkbox">Запомнить меня</label>
           </div>
           <AuthButton
-            disabled={loginButtonDisabled}
             text="Войти"
           />
         </form>
