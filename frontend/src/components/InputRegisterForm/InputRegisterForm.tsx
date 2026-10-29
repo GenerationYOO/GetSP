@@ -24,17 +24,19 @@ export function InputRegisterForm(props: Props) {
       <div className='inputWrapper'>
         <img className='inputLeftIcon' src={props.leftIcon} alt="left icon" />
 
-        <input className={`inputField ${props.error ? 'hasError' : ''}`}
-          type={props.type === 'password'
-            ? (isPasswordVisible ? 'text' : 'password')
-            : props.type}
+        <input
+          className={`inputField ${props.type === 'password' ? 'passwordInput' : ''
+            } ${props.error ? 'hasError' : ''}`}
+          type={
+            props.type === 'password'
+              ? (isPasswordVisible ? 'text' : 'password')
+              : props.type
+          }
           placeholder={props.placeholder}
           value={props.value}
           onChange={(e) => props.onChange?.(e.target.value)}
           onBlur={props.onBlur}
-          >
-
-        </input>
+        />
         {props.rightIcon && (
           <button
             className='inputRightIconButton'

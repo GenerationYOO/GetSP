@@ -76,7 +76,7 @@
   color: #585858;
   line-height: 15px;
 }
-input[type="password"] {
+.inputField.passwordInput {
   font-size: 10px;
 }
 .inputField:-webkit-autofill {
