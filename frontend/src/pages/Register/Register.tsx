@@ -24,6 +24,33 @@ type RegisterFormErrors = {
   confirmPassword?: string;
 };
 
+function getPasswordError(password: string): string | undefined {
+  if (!password) {
+    return 'Введите ваш пароль';
+  }
+
+  if (password.length < 8) {
+    return 'Минимальная длина пароля - 8';
+  }
+
+  return undefined;
+}
+
+function getConfirmPasswordError(
+  password: string,
+  confirmPassword: string
+): string | undefined {
+  if (!confirmPassword) {
+    return 'Повторите ваш пароль';
+  }
+
+  if (password !== confirmPassword) {
+    return 'Пароли не совпадают';
+  }
+
+  return undefined;
+}
+
 export function Register() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState<RegisterFormData>({
@@ -43,20 +70,22 @@ export function Register() {
 
   function validateForm() {
     const newErrors: RegisterFormErrors = {};
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.password = 'Пароли не совпадают';
-      newErrors.confirmPassword = 'Пароли не совпадают';
+    const passwordError = getPasswordError(formData.password);
+    const confirmPasswordError = getConfirmPasswordError(
+      formData.password,
+      formData.confirmPassword
+    );
+
+    if (passwordError) {
+      newErrors.password = passwordError;
     }
-    if (formData.password.length < 8) {
-      newErrors.password = 'Минимальная длина пароля - 8';
+    if (confirmPasswordError) {
+      newErrors.confirmPassword = confirmPasswordError;
     }
-    if (!formData.password) {
-      newErrors.password = 'Введите ваш пароль';
-    }
-    if (!formData.name) {
+    if (!formData.name.trim()) {
       newErrors.name = 'Введите ваше имя';
     }
-    if (!formData.email) {
+    if (!formData.email.trim()) {
       newErrors.email = 'Введите вашу электронную почту';
     }
     setErrors(newErrors);
@@ -78,6 +107,91 @@ export function Register() {
     }
   }
 
+  function handleNameChange(value: string) {
+    setFormData(prev => ({ ...prev, name: value }));
+
+    if (touched.name) {
+      setErrors(prev => ({
+        ...prev,
+        name: value.trim() ? undefined : 'Введите ваше имя'
+      }));
+    }
+  }
+
+  function handleNameBlur() {
+    setTouched(prev => ({ ...prev, name: true }));
+
+    if (!formData.name.trim()) {
+      setErrors(prev => ({ ...prev, name: 'Введите ваше имя' }));
+    }
+  }
+
+  function handleEmailChange(value: string) {
+    setFormData(prev => ({ ...prev, email: value }));
+
+    if (touched.email) {
+      setErrors(prev => ({
+        ...prev,
+        email: value.trim() ? undefined : 'Введите вашу электронную почту'
+      }));
+    }
+  }
+
+  function handleEmailBlur() {
+    setTouched(prev => ({ ...prev, email: true }));
+
+    if (!formData.email.trim()) {
+      setErrors(prev => ({
+        ...prev,
+        email: 'Введите вашу электронную почту'
+      }));
+    }
+  }
+
+  function handlePasswordChange(value: string) {
+    setFormData(prev => ({ ...prev, password: value }));
+
+    if (touched.password || touched.confirmPassword) {
+      setErrors(prev => ({
+        ...prev,
+        password: touched.password ? getPasswordError(value) : prev.password,
+        confirmPassword: touched.confirmPassword
+          ? getConfirmPasswordError(value, formData.confirmPassword)
+          : prev.confirmPassword
+      }));
+    }
+  }
+
+  function handlePasswordBlur() {
+    setTouched(prev => ({ ...prev, password: true }));
+    setErrors(prev => ({
+      ...prev,
+      password: getPasswordError(formData.password)
+    }));
+  }
+
+  function handleConfirmPasswordChange(value: string) {
+    setFormData(prev => ({ ...prev, confirmPassword: value }));
+
+    if (touched.confirmPassword) {
+      setErrors(prev => ({
+        ...prev,
+        confirmPassword: getConfirmPasswordError(formData.password, value)
+      }));
+    }
+  }
+
+  function handleConfirmPasswordBlur() {
+    setTouched(prev => ({ ...prev, confirmPassword: true }));
+    setErrors(prev => ({
+      ...prev,
+      confirmPassword: getConfirmPasswordError(
+        formData.password,
+        formData.confirmPassword
+      )
+    }));
+  }
+
   return (
     <div className="registerPage">
       <div className="registerForm">
@@ -92,32 +206,9 @@ export function Register() {
             value={formData.name}
             placeholder="Иванов Иван"
             leftIcon={userIcon}
-            onChange={(value) => {
-              setFormData(prev => ({
-                ...prev,
-                name: value
-              }));
-              if (touched.name && value.trim()) {
-                setErrors(prev => ({
-                  ...prev,
-                  name: ''
-                }));
-              }
-            }}
+            onChange={handleNameChange}
             error={errors.name}
-            onBlur={() => {
-              setTouched(prev => ({
-                ...prev,
-                name: true
-              }));
-              if (!formData.name.trim()) {
-                setErrors(prev => ({
-                  ...prev,
-                  name: 'Введите ваше имя'
-                }));
-              }
-            }
-            }
+            onBlur={handleNameBlur}
           />
           <InputRegisterForm
             title="Электронная почта"
@@ -125,31 +216,9 @@ export function Register() {
             value={formData.email}
             placeholder="name@example.com"
             leftIcon={emailIcon}
-            onChange={(value) => {
-              setFormData(prev => ({
-                ...prev,
-                email: value
-              }));
-              if (touched.email && value.trim()) {
-                setErrors(prev => ({
-                  ...prev,
-                  email: ''
-                }));
-              }
-            }}
+            onChange={handleEmailChange}
             error={errors.email}
-            onBlur={() => {
-              setTouched(prev => ({
-                ...prev,
-                email: true
-              }));
-              if (!formData.email.trim()) {
-                setErrors(prev => ({
-                  ...prev,
-                  email: 'Введите вашу электронную почту'
-                }));
-              }
-            }}
+            onBlur={handleEmailBlur}
           />
           <InputRegisterForm
             title="Пароль"
@@ -159,31 +228,9 @@ export function Register() {
             leftIcon={passwordIcon}
             rightIcon={eyeIcon}
             rightIconActive={eyeSlashIcon}
-            onChange={(value) => {
-              setFormData(prev => ({
-                ...prev,
-                password: value
-              }));
-              if (touched.password && value.trim()) {
-                setErrors(prev => ({
-                  ...prev,
-                  password: ''
-                }));
-              }
-            }}
+            onChange={handlePasswordChange}
             error={errors.password}
-            onBlur={() => {
-              setTouched(prev => ({
-                ...prev,
-                password: true
-              }));
-              if (!formData.password.trim()) {
-                setErrors(prev => ({
-                  ...prev,
-                  password: 'Введите ваш пароль'
-                }));
-              }
-            }}
+            onBlur={handlePasswordBlur}
           />
           <InputRegisterForm
             title="Повторите пароль"
@@ -193,32 +240,8 @@ export function Register() {
             leftIcon={passwordIcon}
             rightIcon={eyeIcon}
             rightIconActive={eyeSlashIcon}
-            onChange={(value) => {
-              setFormData(prev => ({
-                ...prev,
-                confirmPassword: value
-              }));
-              if (touched.confirmPassword && value.trim()) {
-                setErrors(prev => ({
-                  ...prev,
-                  password: '',
-                  confirmPassword: ''
-                }));
-              }
-            }}
-            onBlur={() => {
-              setTouched(prev => ({
-                ...prev,
-                confirmPassword: true
-              }));
-              if (!formData.confirmPassword.trim()) {
-                setErrors(prev => ({
-                  ...prev,
-                  password: 'Повторите ваш пароль',
-                  confirmPassword: 'Повторите ваш пароль'
-                }));
-              }
-            }}
+            onChange={handleConfirmPasswordChange}
+            onBlur={handleConfirmPasswordBlur}
             error={errors.confirmPassword}
             description='Минимальная длина пароля - 8'
           />

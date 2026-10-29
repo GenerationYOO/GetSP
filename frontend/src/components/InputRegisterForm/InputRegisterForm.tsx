@@ -49,7 +49,11 @@ export function InputRegisterForm(props: Props) {
       <div
         className={`inputMessage ${props.description ? 'hasDescription' : 'hasError'}`}
       >
-        {props.description ? (
+        {props.error ? (
+          <p className="inputError isVisible">
+            {props.error}
+          </p>
+        ) : props.description ? (
           <p className="inputDescription">{props.description}</p>
         ) : (
           <p className={`inputError ${props.error ? 'isVisible' : ''}`}>
