@@ -1,9 +1,11 @@
 .registerPage {
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100dvh;
   background-color: #EDEDED;
   background-image: url('../../assets/RegistrationBackground.svg');
   background-repeat: no-repeat;
@@ -61,6 +63,6 @@
 
   .registerFormFields {
     padding: 20px 4px;
-    gap: 5px;
+    gap: 0px;
   }
 }

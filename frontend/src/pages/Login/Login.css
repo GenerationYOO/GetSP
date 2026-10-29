@@ -1,4 +1,6 @@
 .loginPage{
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,7 +78,7 @@
 
   .loginFormFields {
     padding: 20px 4px;
-    gap: 5px;
+    gap: 0px;
   }
   .loginFormDescription{
     font-size: 16px;
