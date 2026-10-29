@@ -1,11 +1,24 @@
 .registerPage {
   position: fixed;
   inset: 0;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  max-height: 100svh;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100dvh;
+  justify-content: flex-start;
+
+  padding-top: max(12px, env(safe-area-inset-top));
+  padding-right: 8px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  padding-left: 8px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
   background-color: #EDEDED;
   background-image: url('../../assets/RegistrationBackground.svg');
   background-repeat: no-repeat;
@@ -20,6 +33,7 @@
   background-color: #FFFFFF;
   border-radius: 23px;
   padding: 32px;
+
 }
 .registerTitle{
   padding-bottom: 13px;
@@ -46,7 +60,9 @@
 }
 @media (max-width: 600px) {
   .registerForm {
-    padding: 24px;
+    flex-shrink: 0;
+    margin: 8px 0;
+    padding: 16px;
   }
 
   .registerFormFields {
