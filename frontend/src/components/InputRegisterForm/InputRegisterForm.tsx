@@ -16,8 +16,51 @@ type Props = {
   error?: string;
   onBlur?: () => void;
 };
+
+function getInputClassName(type: string, error?: string): string {
+  const classes = ['inputField'];
+
+  if (type === 'password') {
+    classes.push('passwordInput');
+  }
+
+  if (error) {
+    classes.push('hasError');
+  }
+
+  return classes.join(' ');
+}
+
+function getInputType(
+  type: string,
+  isPasswordVisible: boolean
+): string {
+  if (type === 'password') {
+    return isPasswordVisible ? 'text' : 'password';
+  }
+
+  return type;
+}
+
+function getInputMessage(
+  error?: string,
+  description?: string
+) : React.ReactNode {
+  if(error) {
+    return <p className="inputError isVisible">{error}</p>;
+  }
+  if(description) {
+    return <p className="inputDescription">{description}</p>;
+  }
+  return <p className="inputError">
+      {'\u00A0'}
+    </p>;
+}
+
 export function InputRegisterForm(props: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const inputClassName = getInputClassName(props.type, props.error);
+  const inputType = getInputType(props.type, isPasswordVisible);
   return (
     <div className={"inputRegisterForm"}>
       <h3 className='inputTitle'>{props.title.toUpperCase()}</h3>
@@ -25,13 +68,8 @@ export function InputRegisterForm(props: Props) {
         <img className='inputLeftIcon' src={props.leftIcon} alt="left icon" />
 
         <input
-          className={`inputField ${props.type === 'password' ? 'passwordInput' : ''
-            } ${props.error ? 'hasError' : ''}`}
-          type={
-            props.type === 'password'
-              ? (isPasswordVisible ? 'text' : 'password')
-              : props.type
-          }
+          className={inputClassName}
+          type={inputType}
           placeholder={props.placeholder}
           value={props.value}
           onChange={(e) => props.onChange?.(e.target.value)}
@@ -51,17 +89,7 @@ export function InputRegisterForm(props: Props) {
       <div
         className={`inputMessage ${props.description ? 'hasDescription' : 'hasError'}`}
       >
-        {props.error ? (
-          <p className="inputError isVisible">
-            {props.error}
-          </p>
-        ) : props.description ? (
-          <p className="inputDescription">{props.description}</p>
-        ) : (
-          <p className={`inputError ${props.error ? 'isVisible' : ''}`}>
-            {props.error || '\u00A0'}
-          </p>
-        )}
+        {getInputMessage(props.error, props.description)}
       </div>
     </div>
   )
