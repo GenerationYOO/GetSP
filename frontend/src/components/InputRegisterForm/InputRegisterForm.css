@@ -1,0 +1,85 @@
+.inputTitle{
+  color: #424242;
+  font-size: 18px;
+  font-weight: 400;
+  padding-bottom: 12px;
+  cursor: default;
+}
+.inputWrapper{
+  position: relative;
+  display: flex;
+}
+.inputLeftIcon{
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.inputRightIcon{
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.inputField{
+  width: 100%;
+  height: 48px;
+  border: 2px solid #585858;
+  border-radius: 7px;
+  padding: 0 calc(16px + 24px);
+  padding-top: 2px;
+}
+.inputField:hover{
+  outline: none;
+  border-color: #202020;
+}
+.inputField:focus{
+  outline: none;
+  border-color: #000000;
+}
+.inputField.hasError{
+  border-color: #FF0000;
+}
+.inputRightIconButton{
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.inputMessage {
+  font-size: 12px;
+}
+.inputMessage.hasError {
+  min-height: 19px;
+}
+.inputError {
+  min-height: 15px;
+  margin: 0;
+  color: #FF0000;
+  line-height: 15px;
+  visibility: hidden;
+}
+.inputError.isVisible {
+  visibility: visible;
+}
+.inputDescription {
+  margin: 0;
+  padding-top: 9px;
+  color: #585858;
+  line-height: 15px;
+}
+.inputField.passwordInput::placeholder {
+  font-size: 10px;
+}
+.inputField:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+  -webkit-text-fill-color: #000;
+}
