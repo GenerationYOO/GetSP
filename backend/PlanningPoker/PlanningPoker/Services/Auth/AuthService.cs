@@ -66,6 +66,9 @@ namespace PlanningPoker.Services.Auth
                 ExpiresIn = 900
             };
         }
-        public Task<AuthResponse> RefreshTokenAsync(string refreshToken);
+        public async Task<AuthResponse> RefreshTokenAsync(string refreshToken)
+        {
+            throw new UnauthorizedException("Функция обновления токена пока не реализована");
+        }
     }
 }
