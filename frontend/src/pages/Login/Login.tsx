@@ -7,6 +7,7 @@ import eyeSlashIcon from '../../assets/icons/eyeOff.svg'
 import { Checkbox } from '../../components/Checkbox/Checkbox'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { isAxiosError } from 'axios'
 import { loginUser } from '../../api/login'
 import { AuthButton } from '../../components/AuthButton/AuthButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
@@ -20,6 +21,28 @@ type LoginFormErrors = {
   email?: string;
   password?: string;
 };
+
+type LoginValidationErrors = Record<string, string[]>;
+
+function getBackendErrors(
+  validationErrors: LoginValidationErrors | undefined
+): LoginFormErrors {
+  if (!validationErrors) {
+    return {};
+  }
+
+  const getError = (field: string): string | undefined => {
+    const messages = validationErrors[field] ??
+      validationErrors[field.toLowerCase()];
+    return messages?.join(' ');
+  };
+
+  return {
+    email: getError('Email'),
+    password: getError('Password')
+  };
+}
+
 export function Login() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState<LoginFormData>({
@@ -58,6 +81,24 @@ export function Login() {
         navigate('/home');
       } catch (error) {
         console.error('Ошибка при входе:', error);
+
+        if (isAxiosError(error)) {
+          const data = error.response?.data;
+
+          const validationErrors = data?.errors as
+            | LoginValidationErrors
+            | undefined;
+
+          const backendErrors = getBackendErrors(validationErrors);
+
+          setErrors(prev => ({
+            ...prev,
+            ...backendErrors,
+            ...(Object.keys(backendErrors).length === 0 && data?.message
+              ? { password: data.message }
+              : {})
+          }));
+        }
       }
     }
   }
