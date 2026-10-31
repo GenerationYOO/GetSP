@@ -19,14 +19,27 @@ namespace PlanningPoker.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             var response = await _authService.RegisterAsync(request);
-            return StatusCode(201, response);
+            SetRefreshTokenCookie(response.RefreshToken); 
+            return StatusCode(201, response); 
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var response = await _authService.LoginAsync(request);
+            SetRefreshTokenCookie(response.RefreshToken);
             return Ok(response);
+        }
+        private void SetRefreshTokenCookie(string refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true, 
+                Secure = true,   
+                SameSite = SameSiteMode.Strict, 
+                Expires = DateTime.UtcNow.AddDays(30)
+            };
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
     }
 }

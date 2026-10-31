@@ -8,5 +8,6 @@ namespace PlanningPoker.Data
         public DbSet<User> Users { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions)
         { }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }
