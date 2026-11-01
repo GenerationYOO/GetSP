@@ -5,8 +5,8 @@
   border-radius: 15px;
   border: none;
   font-size: 20px;
-  color: #646464;
-  background-color: #F0F0F0;
+  color: var(--color-text-muted);
+  background-color: var(--color-control-disabled);
 }
 .authButton {
   width: 100%;
@@ -15,12 +15,12 @@
   border-radius: 15px;
   border: none;
   font-size: 20px;
-  color: #FFFFFF;
-  background-color: #3D3D3D;
+  color: var(--color-action-text);
+  background-color: var(--color-action);
 }
 .authButton:hover {
-  background-color: #292929;
+  background-color: var(--color-action-hover);
 }
 .authButton:active {
-  background-color: #030303;
+  background-color: var(--color-action-active);
 }

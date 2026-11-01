@@ -32,16 +32,45 @@
 
 
 :root {
-  color: #000000;
+  color: var(--color-text-primary);
   font-family: 'Inter', Arial, sans-serif;
   text-rendering: optimizeLegibility;
-  background: #f4f6f8;
-
+  background: var(--color-page-background);
+  
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+:root {
+  /* Фон и поверхности */
+  --color-page-background: #EDEDED;
+  --color-surface: #FFFFFF;
 
+  /* Текст */
+  --color-text-primary: #000000;
+  --color-text-secondary: #5E5E5E;
+  --color-text-label: #424242;
+  --color-text-muted: #646464;
+  --color-text-description: #585858;
+
+  /* Основное действие */
+  --color-action: #3D3D3D;
+  --color-action-hover: #292929;
+  --color-action-active: #030303;
+  --color-action-text: #FFFFFF;
+
+  /* Поля */
+  --color-input-border: #585858;
+  --color-input-border-hover: #202020;
+  --color-input-border-focus: #000000;
+
+  /* Ошибки */
+  --color-error: #FF0000;
+
+  /* Интерактивные элементы */
+  --color-checkbox-mark: #FFFFFF;
+  --color-control-disabled: #F0F0F0;
+}
 * {
   box-sizing: border-box;
   margin: 0;

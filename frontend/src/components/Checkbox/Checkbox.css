@@ -7,13 +7,13 @@
 .checkboxInput{
   height: 100%;
   width: 100%;
-  border: 2px solid #3D3D3D;
+  border: 2px solid var(--color-action);
   border-radius: 4px;
   appearance: none
 }
 .checkboxInput:checked{
-  background-color: #3D3D3D;
-  border: 2px solid #3D3D3D;
+  background-color: var(--color-action);
+  border: 2px solid var(--color-action);
 }
 .checkboxInput:checked::after{
   content: '';
@@ -22,7 +22,7 @@
   top: 6px;
   width: 6px;
   height: 12px;
-  border: solid #FFFFFF;
+  border: solid var(--color-checkbox-mark);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
