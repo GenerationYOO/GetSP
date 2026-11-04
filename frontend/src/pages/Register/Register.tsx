@@ -7,6 +7,7 @@ import eyeIcon from '../../assets/icons/eye.svg'
 import eyeSlashIcon from '../../assets/icons/eyeOff.svg'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { isAxiosError } from 'axios'
 import { registerUser } from '../../api/register'
 import { AuthButton } from '../../components/AuthButton/AuthButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
@@ -23,6 +24,27 @@ type RegisterFormErrors = {
   password?: string;
   confirmPassword?: string;
 };
+
+type RegisterValidationErrors = Record<string, string[]>;
+
+function getBackendErrors(
+  errors: RegisterValidationErrors | undefined
+): RegisterFormErrors {
+  if (!errors) {
+    return {};
+  }
+
+  const getError = (field: string): string | undefined => {
+    const messages = errors[field] ?? errors[field.toLowerCase()];
+    return messages?.join(' ');
+  };
+
+  return {
+    name: getError('Name'),
+    email: getError('Email'),
+    password: getError('Password')
+  };
+}
 
 function getPasswordError(password: string): string | undefined {
   if (!password) {
@@ -103,6 +125,17 @@ export function Register() {
         navigate('/login');
       } catch (error) {
         console.error('Ошибка при регистрации:', error);
+
+        if (isAxiosError(error)) {
+          const validationErrors = error.response?.data?.errors as
+            | RegisterValidationErrors
+            | undefined;
+
+          setErrors(prev => ({
+            ...prev,
+            ...getBackendErrors(validationErrors)
+          }));
+        }
       }
     }
   }
@@ -204,7 +237,7 @@ export function Register() {
             title="Ваше имя"
             type="name"
             value={formData.name}
-            placeholder="Иванов Иван"
+            placeholder="Иван"
             leftIcon={userIcon}
             onChange={handleNameChange}
             error={errors.name}

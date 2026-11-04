@@ -3,12 +3,12 @@
   padding: 11px 32px;
   border-radius: 15px;
   border: none;
-  background-color: #3D3D3D;
-  color: #FFFFFF;
+  background-color: var(--color-action);
+  color: var(--color-action-text);
 }
 .authSwitchButton:hover{
-  background-color: #292929;
+  background-color: var(--color-action-hover);
 }
 .authSwitchButton:active{
-  background-color: #030303;
+  background-color: var(--color-action-active);
 }
