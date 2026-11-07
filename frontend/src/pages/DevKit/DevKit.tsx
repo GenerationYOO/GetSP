@@ -36,7 +36,7 @@ export function DevKit() {
             <Checkbox />
           </article>
 
-          <article className="devkitCard devkitCardWide">
+          <article className="devkitCard">
             <h3 className="devkitCardTitle">InputRegisterForm</h3>
             <InputRegisterForm
               title="InputRegisterForm"
