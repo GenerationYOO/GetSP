@@ -48,6 +48,12 @@
   width: 100%;
   padding: 32px 52px 19px 52px;
 }
+.registerFormError {
+  margin: 0;
+  color: var(--color-error);
+  font-size: 16px;
+  text-align: center;
+}
 .registerFooter{
   display: flex;
   flex-direction: column;

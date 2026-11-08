@@ -82,6 +82,7 @@ export function Register() {
     confirmPassword: ''
   })
   const [errors, setErrors] = useState<RegisterFormErrors>({});
+  const [formError, setFormError] = useState<string>();
 
   const [touched, setTouched] = useState({
     name: false,
@@ -111,6 +112,7 @@ export function Register() {
       newErrors.email = 'Введите вашу электронную почту';
     }
     setErrors(newErrors);
+    setFormError(undefined);
 
     return Object.keys(newErrors).length === 0;
   }
@@ -127,14 +129,24 @@ export function Register() {
         console.error('Ошибка при регистрации:', error);
 
         if (isAxiosError(error)) {
-          const validationErrors = error.response?.data?.errors as
-            | RegisterValidationErrors
-            | undefined;
+          const data = error.response?.data;
+          const validationErrors = data?.errors as RegisterValidationErrors | undefined;
+          const fieldErrors = getBackendErrors(validationErrors);
+          const generalError = data?.message ||
+            Object.values(validationErrors ?? {}).flat().join(' ') ||
+            'Ошибка регистрации';
 
           setErrors(prev => ({
             ...prev,
-            ...getBackendErrors(validationErrors)
+            ...fieldErrors
           }));
+          setFormError(
+            Object.keys(fieldErrors).length === 0 ? generalError : undefined
+          );
+        } else if (error instanceof Error) {
+          setFormError(error.message);
+        } else {
+          setFormError('Неизвестная ошибка');
         }
       }
     }
@@ -142,6 +154,7 @@ export function Register() {
 
   function handleNameChange(value: string) {
     setFormData(prev => ({ ...prev, name: value }));
+    setFormError(undefined);
 
     if (touched.name) {
       setErrors(prev => ({
@@ -161,6 +174,7 @@ export function Register() {
 
   function handleEmailChange(value: string) {
     setFormData(prev => ({ ...prev, email: value }));
+    setFormError(undefined);
 
     if (touched.email) {
       setErrors(prev => ({
@@ -183,6 +197,7 @@ export function Register() {
 
   function handlePasswordChange(value: string) {
     setFormData(prev => ({ ...prev, password: value }));
+    setFormError(undefined);
 
     if (touched.password || touched.confirmPassword) {
       setErrors(prev => ({
@@ -205,6 +220,7 @@ export function Register() {
 
   function handleConfirmPasswordChange(value: string) {
     setFormData(prev => ({ ...prev, confirmPassword: value }));
+    setFormError(undefined);
 
     if (touched.confirmPassword) {
       setErrors(prev => ({
@@ -280,15 +296,16 @@ export function Register() {
           />
           <AuthButton
             text="Зарегистрироваться"
-          />
+            />
         </form>
         <div className="registerFooter">
           <p className="registerFooterDescription">Уже есть аккаунт?</p>
           <AuthSwitch
             text="Войти"
             onClick={() => navigate("/login")}
-          />
+            />
         </div>
+        {formError && <p className="registerFormError">{formError}</p>}
       </div>
     </div>
   )

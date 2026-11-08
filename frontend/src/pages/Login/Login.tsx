@@ -51,7 +51,7 @@ export function Login() {
     rememberMe: false
   })
   const [errors, setErrors] = useState<LoginFormErrors>({});
-
+  const [formError, setFormError] = useState<string>();
   const [touched, setTouched] = useState({
     email: false,
     password: false
@@ -67,6 +67,7 @@ export function Login() {
     }
 
     setErrors(newErrors);
+    setFormError(undefined);
 
     return Object.keys(newErrors).length === 0;
   }
@@ -84,26 +85,30 @@ export function Login() {
 
         if (isAxiosError(error)) {
           const data = error.response?.data;
-
-          const validationErrors = data?.errors as
-            | LoginValidationErrors
-            | undefined;
-
-          const backendErrors = getBackendErrors(validationErrors);
+          const validationErrors = data?.errors as LoginValidationErrors | undefined;
+          const fieldErrors = getBackendErrors(validationErrors);
+          const generalError = data?.message ||
+            Object.values(validationErrors ?? {}).flat().join(' ') ||
+            'Ошибка регистрации';
 
           setErrors(prev => ({
             ...prev,
-            ...backendErrors,
-            ...(Object.keys(backendErrors).length === 0 && data?.message
-              ? { password: data.message }
-              : {})
+            ...fieldErrors
           }));
+          setFormError(
+            Object.keys(fieldErrors).length === 0 ? generalError : undefined
+          );
+        } else if (error instanceof Error) {
+          setFormError(error.message);
+        } else {
+          setFormError('Неизвестная ошибка');
         }
       }
     }
   }
 
   async function handleEmailChange(value: string) {
+    setFormError(undefined);
     setFormData(prev => ({
       ...prev,
       email: value
@@ -131,6 +136,7 @@ export function Login() {
   }
 
   async function handlePasswordChange(value: string) {
+    setFormError(undefined);
     setFormData(prev => ({
       ...prev,
       password: value
@@ -157,6 +163,7 @@ export function Login() {
   }
 
   async function handleCheckboxChange(checked: boolean) {
+    setFormError(undefined);
     setFormData(prev => ({
       ...prev,
       rememberMe: checked
@@ -210,7 +217,7 @@ export function Login() {
             onClick={() => navigate("/register")}
           />
         </div>
-
+        {formError && <p className="loginFormError">{formError}</p>}
       </div>
     </div>
   )
