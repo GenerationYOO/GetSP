@@ -13,7 +13,7 @@ services:
 
   backend:
     build: 
-      context: ./backend/PlanningPoker
+      context: ./backend/PlanningPoker/PlanningPoker
       dockerfile: Dockerfile
     restart: always
     environment:
