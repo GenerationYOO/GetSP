@@ -4,18 +4,20 @@ using PlanningPoker.Services.Auth;
 using PlanningPoker.Contracts.Auth;
 using PlanningPoker.Exceptions;
 using PlanningPoker.Models;
-using Xunit;
+using NUnit.Framework;
 using Moq;
 
 namespace PlanningPoker.Tests.Services
 {
+    [TestFixture]
     public class AuthServiceTests
     {
-        private readonly AppDbContext dbContext;
-        private readonly Mock<IJwtTokenGenerator> jwtGeneratorMock;
-        private readonly AuthService authService;
+        private AppDbContext dbContext;
+        private Mock<IJwtTokenGenerator> jwtGeneratorMock;
+        private AuthService authService;
 
-        public AuthServiceTests()
+        [SetUp]
+        public void Setup()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -29,7 +31,7 @@ namespace PlanningPoker.Tests.Services
             authService = new AuthService(dbContext, jwtGeneratorMock.Object);
         }
 
-        [Fact]
+        [Test]
         public async Task RegisterAsync_ShouldCreateUser_WhenDataIsValid()
         {
             var request = new RegisterRequest
@@ -41,27 +43,27 @@ namespace PlanningPoker.Tests.Services
 
             var result = await authService.RegisterAsync(request);
 
-            Assert.NotNull(result);
-            Assert.Equal("fake-access-token", result.AccessToken);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.AccessToken, Is.EqualTo("fake-access-token"));
 
             var userInDb = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == "test@example.com");
-            Assert.NotNull(userInDb);
-            Assert.Equal("Тестовый", userInDb.Username);
-            Assert.NotEqual("Password123!", userInDb.PasswordHash); 
+            Assert.That(userInDb, Is.Not.Null);
+            Assert.That(userInDb.Username, Is.EqualTo("Тестовый"));
+            Assert.That(userInDb.PasswordHash, Is.Not.EqualTo("Password123!"));
         }
 
-        [Fact]
+        [Test]
         public async Task RegisterAsync_ShouldThrowConflictException_WhenEmailAlreadyExists()
         {
             var request = new RegisterRequest { Username = "Первый", Email = "test@example.com", Password = "Password123!" };
-            await authService.RegisterAsync(request); 
+            await authService.RegisterAsync(request);
 
             var duplicateRequest = new RegisterRequest { Username = "Второй", Email = "test@example.com", Password = "Password123!" };
 
-            await Assert.ThrowsAsync<ConflictException>(() => authService.RegisterAsync(duplicateRequest));
+            Assert.ThrowsAsync<ConflictException>(async () => await authService.RegisterAsync(duplicateRequest));
         }
 
-        [Fact]
+        [Test]
         public async Task LoginAsync_ShouldReturnTokens_WhenCredentialsAreValid()
         {
             var request = new RegisterRequest { Username = "Юзер", Email = "login@example.com", Password = "Password123!" };
@@ -71,11 +73,11 @@ namespace PlanningPoker.Tests.Services
 
             var result = await authService.LoginAsync(loginRequest);
 
-            Assert.NotNull(result);
-            Assert.Equal("fake-access-token", result.AccessToken);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.AccessToken, Is.EqualTo("fake-access-token"));
         }
 
-        [Fact]
+        [Test]
         public async Task LoginAsync_ShouldThrowUnauthorizedException_WhenPasswordIsWrong()
         {
             var request = new RegisterRequest { Username = "Юзер", Email = "wrong@example.com", Password = "Password123!" };
@@ -83,7 +85,7 @@ namespace PlanningPoker.Tests.Services
 
             var loginRequest = new LoginRequest { Email = "wrong@example.com", Password = "WrongPassword!" };
 
-            await Assert.ThrowsAsync<UnauthorizedException>(() => authService.LoginAsync(loginRequest));
+            Assert.ThrowsAsync<UnauthorizedException>(async () => await authService.LoginAsync(loginRequest));
         }
     }
 }
