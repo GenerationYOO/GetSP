@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Register } from "./pages/Register/Register";
 import { Login } from "./pages/Login/Login";
+import { DevKit } from "./pages/DevKit/DevKit";
 import './App.css'
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
      <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/devkit" element={<DevKit />} />
       </Routes>
     </BrowserRouter>
   )
