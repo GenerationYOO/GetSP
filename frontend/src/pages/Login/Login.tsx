@@ -11,6 +11,7 @@ import { isAxiosError } from 'axios'
 import { loginUser } from '../../api/login'
 import { AuthButton } from '../../components/AuthButton/AuthButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
+import { PageLayout } from '../../components/PageLayout/PageLayout'
 
 type LoginFormData = {
   email: string;
@@ -171,7 +172,7 @@ export function Login() {
   }
 
   return (
-    <div className="loginPage">
+    <PageLayout>
       <div className="loginForm">
         <h2 className="loginFormTitle">Добро пожаловать</h2>
         <p className="loginFormDescription">Войдите в свою учетную запись</p>
@@ -219,6 +220,6 @@ export function Login() {
         </div>
         {formError && <p className="loginFormError">{formError}</p>}
       </div>
-    </div>
+    </PageLayout>
   )
 }

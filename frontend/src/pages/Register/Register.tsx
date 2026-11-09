@@ -11,6 +11,7 @@ import { isAxiosError } from 'axios'
 import { registerUser } from '../../api/register'
 import { AuthButton } from '../../components/AuthButton/AuthButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
+import { PageLayout } from '../../components/PageLayout/PageLayout'
 
 type RegisterFormData = {
   name: string;
@@ -242,7 +243,7 @@ export function Register() {
   }
 
   return (
-    <div className="registerPage">
+    <PageLayout>
       <div className="registerForm">
         <div className="projectLogo"></div>
         <h2 className="registerTitle">Регистрация</h2>
@@ -307,6 +308,6 @@ export function Register() {
         </div>
         {formError && <p className="registerFormError">{formError}</p>}
       </div>
-    </div>
+    </PageLayout>
   )
 }
