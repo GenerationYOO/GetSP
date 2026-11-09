@@ -12,6 +12,7 @@ import { registerUser } from '../../api/register'
 import { AuthButton } from '../../components/AuthButton/AuthButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
 import { PageLayout } from '../../components/PageLayout/PageLayout'
+import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
 
 type RegisterFormData = {
   name: string;
@@ -244,7 +245,7 @@ export function Register() {
 
   return (
     <PageLayout>
-      <div className="registerForm">
+      <SurfaceCard>
         <div className="projectLogo"></div>
         <h2 className="registerTitle">Регистрация</h2>
         <p className="registerDescription">Создание нового аккаунта</p>
@@ -307,7 +308,7 @@ export function Register() {
             />
         </div>
         {formError && <p className="registerFormError">{formError}</p>}
-      </div>
+      </SurfaceCard>
     </PageLayout>
   )
 }

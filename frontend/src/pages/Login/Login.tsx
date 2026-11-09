@@ -12,6 +12,7 @@ import { loginUser } from '../../api/login'
 import { AuthButton } from '../../components/AuthButton/AuthButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
 import { PageLayout } from '../../components/PageLayout/PageLayout'
+import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
 
 type LoginFormData = {
   email: string;
@@ -173,7 +174,7 @@ export function Login() {
 
   return (
     <PageLayout>
-      <div className="loginForm">
+      <SurfaceCard>
         <h2 className="loginFormTitle">Добро пожаловать</h2>
         <p className="loginFormDescription">Войдите в свою учетную запись</p>
 
@@ -219,7 +220,7 @@ export function Login() {
           />
         </div>
         {formError && <p className="loginFormError">{formError}</p>}
-      </div>
+      </SurfaceCard>
     </PageLayout>
   )
 }
