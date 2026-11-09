@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PlanningPoker.Contracts.Auth;
 using PlanningPoker.Services.Auth;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PlanningPoker.Controllers
 {
@@ -55,6 +58,19 @@ namespace PlanningPoker.Controllers
             };
 
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<IActionResult> GetMe()
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userIdStr) || !Guid.TryParse(userIdStr, out var userId))
+                return Unauthorized();
+
+            var userDto = await authService.GetCurrentUserAsync(userId);
+            return Ok(userDto);
         }
     }
 }
