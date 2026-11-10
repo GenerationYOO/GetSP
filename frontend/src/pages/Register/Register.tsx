@@ -13,6 +13,7 @@ import { AuthButton } from '../../components/AuthButton/AuthButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
 import { PageLayout } from '../../components/PageLayout/PageLayout'
 import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
+import { FormContainer } from '../../components/FormContainer/FormContainer'
 
 type RegisterFormData = {
   name: string;
@@ -250,7 +251,7 @@ export function Register() {
         <h2 className="registerTitle">Регистрация</h2>
         <p className="registerDescription">Создание нового аккаунта</p>
 
-        <form className="registerFormFields" onSubmit={handleRegister}>
+        <FormContainer onSubmit={handleRegister}>
           <InputForm
             title="Ваше имя"
             type="name"
@@ -299,7 +300,7 @@ export function Register() {
           <AuthButton
             text="Зарегистрироваться"
           />
-        </form>
+        </FormContainer>
         <div className="registerFooter">
           <p className="registerFooterDescription">Уже есть аккаунт?</p>
           <AuthSwitch

@@ -13,6 +13,7 @@ import { AuthButton } from '../../components/AuthButton/AuthButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
 import { PageLayout } from '../../components/PageLayout/PageLayout'
 import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
+import { FormContainer } from '../../components/FormContainer/FormContainer'
 
 type LoginFormData = {
   email: string;
@@ -178,7 +179,7 @@ export function Login() {
         <h2 className="loginFormTitle">Добро пожаловать</h2>
         <p className="loginFormDescription">Войдите в свою учетную запись</p>
 
-        <form className="loginFormFields" onSubmit={handleLogin}>
+        <FormContainer onSubmit={handleLogin}>
           <InputForm
             title="Электронная почта"
             type="email"
@@ -211,7 +212,7 @@ export function Login() {
           <AuthButton
             text="Войти"
           />
-        </form>
+        </FormContainer>
         <div className="loginFooter">
           <p className="loginFooterDescription">Еще нет аккаунта?</p>
           <AuthSwitch
