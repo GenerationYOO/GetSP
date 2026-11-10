@@ -1,5 +1,5 @@
 import "./DevKit.css"
-import { AuthButton } from "../../components/AuthButton/AuthButton"
+import { ActionButton } from "../../components/ActionButton/ActionButton"
 import { AuthSwitch } from "../../components/AuthSwitch/AuthSwitch"
 import { Checkbox } from "../../components/Checkbox/Checkbox"
 import { InputForm } from "../../components/InputForm/InputForm"
@@ -15,7 +15,7 @@ export function DevKit() {
         <div className="devkitGrid">
           <article className="devkitCard">
             <h3 className="devkitCardTitle">AuthButton</h3>
-            <AuthButton text="AuthButton" onClick={() => { }} />
+            <ActionButton text="AuthButton" onClick={() => { }} />
           </article>
 
           <article className="devkitCard">

@@ -52,6 +52,7 @@
   --color-text-label: #424242;
   --color-text-muted: #646464;
   --color-text-description: #585858;
+  --color-text-divider: #3D3D3D;
 
   /* Основное действие */
   --color-action: #3D3D3D;
@@ -63,6 +64,7 @@
   --color-input-border: #585858;
   --color-input-border-hover: #202020;
   --color-input-border-focus: #000000;
+  --color-divider-line: #AFAFAF;
 
   /* Ошибки */
   --color-error: #FF0000;
