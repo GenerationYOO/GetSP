@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { isAxiosError } from 'axios'
 import { loginUser } from '../../api/login'
-import { AuthButton } from '../../components/AuthButton/AuthButton'
+import { ActionButton } from '../../components/ActionButton/ActionButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
 import { PageLayout } from '../../components/PageLayout/PageLayout'
 import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
@@ -209,7 +209,7 @@ export function Login() {
             />
             <label htmlFor="checkbox">Запомнить меня</label>
           </div>
-          <AuthButton
+          <ActionButton
             text="Войти"
           />
         </FormContainer>

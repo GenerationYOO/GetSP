@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { isAxiosError } from 'axios'
 import { registerUser } from '../../api/register'
-import { AuthButton } from '../../components/AuthButton/AuthButton'
+import { ActionButton } from '../../components/ActionButton/ActionButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
 import { PageLayout } from '../../components/PageLayout/PageLayout'
 import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
@@ -297,7 +297,7 @@ export function Register() {
             error={errors.confirmPassword}
             description='Минимальная длина пароля - 8'
           />
-          <AuthButton
+          <ActionButton
             text="Зарегистрироваться"
           />
         </FormContainer>
