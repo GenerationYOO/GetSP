@@ -12,6 +12,11 @@ type Props = {
   leftIcon: string;
   rightIcon?: string;
   rightIconActive?: string;
+  disabled?: boolean;
+
+  rightButtonText?: string;
+  onRightButtonClick?: () => void;
+
   description?: string;
   error?: string;
   onBlur?: () => void;
@@ -72,6 +77,7 @@ export function InputForm(props: Props) {
           type={inputType}
           placeholder={props.placeholder}
           value={props.value}
+          disabled={props.disabled}
           onChange={(e) => props.onChange?.(e.target.value)}
           onBlur={props.onBlur}
         />
@@ -83,6 +89,16 @@ export function InputForm(props: Props) {
             <img className='inputRightIcon'
               src={isPasswordVisible ? props.rightIconActive : props.rightIcon}
               alt="right icon" />
+          </button>
+        )}
+        {props.rightButtonText && (
+          <button
+            className="inputRightButton"
+            type="button"
+            disabled={props.disabled}
+            onClick={props.onRightButtonClick}
+          >
+            {props.rightButtonText}
           </button>
         )}
       </div>
