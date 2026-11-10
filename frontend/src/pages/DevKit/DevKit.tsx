@@ -2,7 +2,7 @@ import "./DevKit.css"
 import { AuthButton } from "../../components/AuthButton/AuthButton"
 import { AuthSwitch } from "../../components/AuthSwitch/AuthSwitch"
 import { Checkbox } from "../../components/Checkbox/Checkbox"
-import { InputRegisterForm } from "../../components/InputRegisterForm/InputRegisterForm"
+import { InputForm } from "../../components/InputForm/InputForm"
 import eyeIcon from "../../assets/icons/eye.svg"
 
 export function DevKit() {
@@ -38,7 +38,7 @@ export function DevKit() {
 
           <article className="devkitCard">
             <h3 className="devkitCardTitle">InputRegisterForm</h3>
-            <InputRegisterForm
+            <InputForm
               title="InputRegisterForm"
               type="text"
               placeholder="Placeholder"

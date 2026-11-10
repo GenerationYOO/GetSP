@@ -1,5 +1,5 @@
 import './Login.css'
-import { InputRegisterForm } from '../../components/InputRegisterForm/InputRegisterForm'
+import { InputForm } from '../../components/InputForm/InputForm'
 import emailIcon from '../../assets/icons/envelope.svg'
 import passwordIcon from '../../assets/icons/lock.svg'
 import eyeIcon from '../../assets/icons/eye.svg'
@@ -179,7 +179,7 @@ export function Login() {
         <p className="loginFormDescription">Войдите в свою учетную запись</p>
 
         <form className="loginFormFields" onSubmit={handleLogin}>
-          <InputRegisterForm
+          <InputForm
             title="Электронная почта"
             type="email"
             value={formData.email}
@@ -189,7 +189,7 @@ export function Login() {
             error={errors.email}
             onBlur={handleEmailBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Пароль"
             type="password"
             placeholder="• • • • • • • •"

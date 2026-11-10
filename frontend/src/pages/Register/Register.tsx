@@ -1,5 +1,5 @@
 import './Register.css'
-import { InputRegisterForm } from '../../components/InputRegisterForm/InputRegisterForm'
+import { InputForm } from '../../components/InputForm/InputForm'
 import userIcon from '../../assets/icons/user1.svg'
 import emailIcon from '../../assets/icons/envelope.svg'
 import passwordIcon from '../../assets/icons/lock.svg'
@@ -251,7 +251,7 @@ export function Register() {
         <p className="registerDescription">Создание нового аккаунта</p>
 
         <form className="registerFormFields" onSubmit={handleRegister}>
-          <InputRegisterForm
+          <InputForm
             title="Ваше имя"
             type="name"
             value={formData.name}
@@ -261,7 +261,7 @@ export function Register() {
             error={errors.name}
             onBlur={handleNameBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Электронная почта"
             type="email"
             value={formData.email}
@@ -271,7 +271,7 @@ export function Register() {
             error={errors.email}
             onBlur={handleEmailBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Пароль"
             type="password"
             value={formData.password}
@@ -283,7 +283,7 @@ export function Register() {
             error={errors.password}
             onBlur={handlePasswordBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Повторите пароль"
             type="password"
             value={formData.confirmPassword}
@@ -298,14 +298,14 @@ export function Register() {
           />
           <AuthButton
             text="Зарегистрироваться"
-            />
+          />
         </form>
         <div className="registerFooter">
           <p className="registerFooterDescription">Уже есть аккаунт?</p>
           <AuthSwitch
             text="Войти"
             onClick={() => navigate("/login")}
-            />
+          />
         </div>
         {formError && <p className="registerFormError">{formError}</p>}
       </SurfaceCard>
