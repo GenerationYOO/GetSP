@@ -22,6 +22,9 @@
   color: var(--color-text-primary);
   font-size: 18px;
 }
+.lastInput {
+  margin-bottom: 19px;
+}
 @media (max-width: 600px) {
   .registerForm {
     flex-shrink: 0;

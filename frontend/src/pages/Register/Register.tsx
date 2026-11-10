@@ -284,19 +284,22 @@ export function Register() {
             error={errors.password}
             onBlur={handlePasswordBlur}
           />
-          <InputForm
-            title="Повторите пароль"
-            type="password"
-            value={formData.confirmPassword}
-            placeholder="• • • • • • • •"
-            leftIcon={passwordIcon}
-            rightIcon={eyeIcon}
-            rightIconActive={eyeSlashIcon}
-            onChange={handleConfirmPasswordChange}
-            onBlur={handleConfirmPasswordBlur}
-            error={errors.confirmPassword}
-            description='Минимальная длина пароля - 8'
-          />
+          <div className="lastInput">
+            <InputForm
+              title="Повторите пароль"
+              type="password"
+              value={formData.confirmPassword}
+              placeholder="• • • • • • • •"
+              leftIcon={passwordIcon}
+              rightIcon={eyeIcon}
+              rightIconActive={eyeSlashIcon}
+              onChange={handleConfirmPasswordChange}
+              onBlur={handleConfirmPasswordBlur}
+              error={errors.confirmPassword}
+              description='Минимальная длина пароля - 8'
+            />
+          </div>
+
           <ActionButton
             text="Зарегистрироваться"
           />
