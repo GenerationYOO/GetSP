@@ -25,10 +25,10 @@ export function SessionCreation() {
 
   function validateForm(): boolean {
     const newErrors: ImportFormErrors = {};
-    if(!sessionName.trim()) {
+    if (!sessionName.trim()) {
       newErrors.name = "Введите название сессии";
     }
-    if(!file && !youTrackLink.trim()) {
+    if (!file && !youTrackLink.trim()) {
       newErrors.file = "Выберите файл";
       newErrors.youTrackLink = "Добавьте ссылку на YouTrack";
     }
@@ -45,6 +45,13 @@ export function SessionCreation() {
       console.log("Importing from file:", file);
     } else if (youTrackLink.trim()) {
       console.log("Importing from YouTrack link:", youTrackLink);
+    }
+  }
+
+  async function onRightButtonClick() {
+    const text = await navigator.clipboard.readText();
+    if (!file) {
+      setYouTrackLink(text);
     }
   }
 
@@ -82,12 +89,7 @@ export function SessionCreation() {
             disabled={Boolean(file)}
             onChange={setYouTrackLink}
             rightButtonText="Вставить"
-            onRightButtonClick={async () => {
-              const text = await navigator.clipboard.readText();
-              if (!file) {
-                setYouTrackLink(text);
-              }
-            }}
+            onRightButtonClick={onRightButtonClick}
             error={errors.youTrackLink}
           />
           <ActionButton

@@ -1,8 +1,17 @@
 import "./ActionButton.css"
 
-export function ActionButton({ text, onClick, disabled }: { text: string; onClick?: () => void; disabled?: boolean }) {
+type ActionButtonProps = {
+  text: string;
+  onClick?: () => void;
+  disabled?: boolean;
+}
+
+export function ActionButton({ text, onClick, disabled }: ActionButtonProps) {
   return (
-    <button className={`actionButton ${disabled ? 'isDisabled' : ''}`} onClick={onClick} disabled={disabled}>
+    <button 
+      className={`actionButton ${disabled ? 'isDisabled' : ''}`} 
+      onClick={onClick} 
+      disabled={disabled}>
       {text}
     </button>
   )

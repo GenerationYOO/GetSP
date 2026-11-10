@@ -21,6 +21,10 @@ function isValidFileType(file: File): boolean {
 export function SpreadsheetUploader(props: SpreadsheetUploaderProps) {
   const [isDragging, setIsDragging] = useState(false);
 
+  function sectionClassName() {
+    return `spreadsheetUploaderDropzone ${isDragging ? "isDragging" : ""}`;
+  }
+
   function handleDrop(event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setIsDragging(false);
@@ -32,6 +36,13 @@ export function SpreadsheetUploader(props: SpreadsheetUploaderProps) {
     handleFileSelect(event.dataTransfer.files[0] ?? null);
   }
 
+  function handleDragOver(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+    if (!props.disabled) {
+      setIsDragging(true);
+    }
+  }
+
   function handleFileSelect(file: File | null) {
     if (!file || !isValidFileType(file)) {
       props.onFileSelect(null);
@@ -41,22 +52,20 @@ export function SpreadsheetUploader(props: SpreadsheetUploaderProps) {
     props.setSelectedFile(file);
     props.onFileSelect(file);
   }
+
+
+  function getSelectedFileName() {
+    return `${props.selectedFile!.name.slice(0, 16)}${props.selectedFile!.name.length > 16 ? "..." : ""}`;
+  }
   return (
     <div className="spreadsheetUploader">
       <h3 className="spreadsheetUploaderTitle">
         {props.title.toUpperCase()}
       </h3>
       <section
-        className={`spreadsheetUploaderDropzone 
-          ${isDragging ? "isDragging" : ""
-          }`}
+        className={sectionClassName()}
         onDrop={handleDrop}
-        onDragOver={(event) => {
-          event.preventDefault();
-          if (!props.disabled) {
-            setIsDragging(true);
-          }
-        }}
+        onDragOver={handleDragOver}
         onDragLeave={() => setIsDragging(false)}
       >
         <img
@@ -66,7 +75,7 @@ export function SpreadsheetUploader(props: SpreadsheetUploaderProps) {
         />
         {props.selectedFile ? (
           <p className="spreadsheetUploaderDescription">
-            Выбран файл: {props.selectedFile.name.slice(0, 16)}{props.selectedFile.name.length > 20 ? "..." : ""}
+            Выбран файл: {getSelectedFileName()}
           </p>
         ) : props.error ? (
           <p className="spreadsheetUploaderError">{props.error}</p>
