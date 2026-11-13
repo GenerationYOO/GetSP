@@ -1,5 +1,5 @@
 import './Register.css'
-import { InputRegisterForm } from '../../components/InputRegisterForm/InputRegisterForm'
+import { InputForm } from '../../components/InputForm/InputForm'
 import userIcon from '../../assets/icons/user1.svg'
 import emailIcon from '../../assets/icons/envelope.svg'
 import passwordIcon from '../../assets/icons/lock.svg'
@@ -9,8 +9,11 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { isAxiosError } from 'axios'
 import { registerUser } from '../../api/register'
-import { AuthButton } from '../../components/AuthButton/AuthButton'
+import { ActionButton } from '../../components/ActionButton/ActionButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
+import { PageLayout } from '../../components/PageLayout/PageLayout'
+import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
+import { FormContainer } from '../../components/FormContainer/FormContainer'
 
 type RegisterFormData = {
   name: string;
@@ -242,14 +245,14 @@ export function Register() {
   }
 
   return (
-    <div className="registerPage">
-      <div className="registerForm">
+    <PageLayout>
+      <SurfaceCard>
         <div className="projectLogo"></div>
         <h2 className="registerTitle">Регистрация</h2>
         <p className="registerDescription">Создание нового аккаунта</p>
 
-        <form className="registerFormFields" onSubmit={handleRegister}>
-          <InputRegisterForm
+        <FormContainer onSubmit={handleRegister}>
+          <InputForm
             title="Ваше имя"
             type="name"
             value={formData.name}
@@ -259,7 +262,7 @@ export function Register() {
             error={errors.name}
             onBlur={handleNameBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Электронная почта"
             type="email"
             value={formData.email}
@@ -269,7 +272,7 @@ export function Register() {
             error={errors.email}
             onBlur={handleEmailBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Пароль"
             type="password"
             value={formData.password}
@@ -281,32 +284,35 @@ export function Register() {
             error={errors.password}
             onBlur={handlePasswordBlur}
           />
-          <InputRegisterForm
-            title="Повторите пароль"
-            type="password"
-            value={formData.confirmPassword}
-            placeholder="• • • • • • • •"
-            leftIcon={passwordIcon}
-            rightIcon={eyeIcon}
-            rightIconActive={eyeSlashIcon}
-            onChange={handleConfirmPasswordChange}
-            onBlur={handleConfirmPasswordBlur}
-            error={errors.confirmPassword}
-            description='Минимальная длина пароля - 8'
-          />
-          <AuthButton
-            text="Зарегистрироваться"
+          <div className="lastInput">
+            <InputForm
+              title="Повторите пароль"
+              type="password"
+              value={formData.confirmPassword}
+              placeholder="• • • • • • • •"
+              leftIcon={passwordIcon}
+              rightIcon={eyeIcon}
+              rightIconActive={eyeSlashIcon}
+              onChange={handleConfirmPasswordChange}
+              onBlur={handleConfirmPasswordBlur}
+              error={errors.confirmPassword}
+              description='Минимальная длина пароля - 8'
             />
-        </form>
+          </div>
+
+          <ActionButton
+            text="Зарегистрироваться"
+          />
+        </FormContainer>
         <div className="registerFooter">
           <p className="registerFooterDescription">Уже есть аккаунт?</p>
           <AuthSwitch
             text="Войти"
             onClick={() => navigate("/login")}
-            />
+          />
         </div>
         {formError && <p className="registerFormError">{formError}</p>}
-      </div>
-    </div>
+      </SurfaceCard>
+    </PageLayout>
   )
 }

@@ -1,0 +1,22 @@
+.surfaceCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100% - 32px, 560px);
+  padding: 32px;
+  background-color: var(--color-surface);
+  border-radius: 23px;
+}
+
+@media (max-width: 600px) {
+  .surfaceCard {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 400px) {
+  .surfaceCard {
+    padding: 16px;
+    border-radius: 20px;
+  }
+}

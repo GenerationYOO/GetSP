@@ -1,5 +1,5 @@
 import './Login.css'
-import { InputRegisterForm } from '../../components/InputRegisterForm/InputRegisterForm'
+import { InputForm } from '../../components/InputForm/InputForm'
 import emailIcon from '../../assets/icons/envelope.svg'
 import passwordIcon from '../../assets/icons/lock.svg'
 import eyeIcon from '../../assets/icons/eye.svg'
@@ -9,8 +9,11 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { isAxiosError } from 'axios'
 import { loginUser } from '../../api/login'
-import { AuthButton } from '../../components/AuthButton/AuthButton'
+import { ActionButton } from '../../components/ActionButton/ActionButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
+import { PageLayout } from '../../components/PageLayout/PageLayout'
+import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
+import { FormContainer } from '../../components/FormContainer/FormContainer'
 
 type LoginFormData = {
   email: string;
@@ -171,13 +174,13 @@ export function Login() {
   }
 
   return (
-    <div className="loginPage">
-      <div className="loginForm">
+    <PageLayout>
+      <SurfaceCard>
         <h2 className="loginFormTitle">Добро пожаловать</h2>
         <p className="loginFormDescription">Войдите в свою учетную запись</p>
 
-        <form className="loginFormFields" onSubmit={handleLogin}>
-          <InputRegisterForm
+        <FormContainer onSubmit={handleLogin}>
+          <InputForm
             title="Электронная почта"
             type="email"
             value={formData.email}
@@ -187,7 +190,7 @@ export function Login() {
             error={errors.email}
             onBlur={handleEmailBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Пароль"
             type="password"
             placeholder="• • • • • • • •"
@@ -206,10 +209,10 @@ export function Login() {
             />
             <label htmlFor="checkbox">Запомнить меня</label>
           </div>
-          <AuthButton
+          <ActionButton
             text="Войти"
           />
-        </form>
+        </FormContainer>
         <div className="loginFooter">
           <p className="loginFooterDescription">Еще нет аккаунта?</p>
           <AuthSwitch
@@ -218,7 +221,7 @@ export function Login() {
           />
         </div>
         {formError && <p className="loginFormError">{formError}</p>}
-      </div>
-    </div>
+      </SurfaceCard>
+    </PageLayout>
   )
 }
