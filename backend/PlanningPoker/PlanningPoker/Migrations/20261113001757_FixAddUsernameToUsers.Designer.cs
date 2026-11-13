@@ -12,8 +12,8 @@ using PlanningPoker.Data;
 namespace PlanningPoker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261112233702_AddUsernameToUsers")]
-    partial class AddUsernameToUsers
+    [Migration("20261113001757_FixAddUsernameToUsers")]
+    partial class FixAddUsernameToUsers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
