@@ -53,6 +53,7 @@
   --color-text-muted: #646464;
   --color-text-description: #585858;
   --color-text-divider: #3D3D3D;
+  --color-text-tag: #374151;
 
   /* Основное действие */
   --color-action: #3D3D3D;
@@ -65,6 +66,7 @@
   --color-input-border-hover: #202020;
   --color-input-border-focus: #000000;
   --color-divider-line: #AFAFAF;
+  --color-task-preview-border: #D1D5DB;
 
   /* Ошибки */
   --color-error: #FF0000;
@@ -72,6 +74,15 @@
   /* Интерактивные элементы */
   --color-checkbox-mark: #FFFFFF;
   --color-control-disabled: #F0F0F0;
+
+  /* Цвета тегов */
+  --color-tag-text-white: #FFFFFF;
+  --color-tag-text-black: #000000;
+  --color-tag-background-normal: #B8E7BC;
+  --color-tag-background-urgent: #DB5C5C;
+  --color-tag-background-critical: #EE4BA7;
+  --color-tag-background-major: #F5D273;
+  --color-tag-background-minor: #5A5D63;
 }
 * {
   box-sizing: border-box;
