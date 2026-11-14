@@ -12,8 +12,8 @@ using PlanningPoker.Data;
 namespace PlanningPoker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261031114845_UpdateUserConstraints")]
-    partial class UpdateUserConstraints
+    [Migration("20261109173217_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,10 +64,6 @@ namespace PlanningPoker.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
@@ -78,6 +74,10 @@ namespace PlanningPoker.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

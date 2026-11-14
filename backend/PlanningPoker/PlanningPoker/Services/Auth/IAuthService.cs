@@ -5,6 +5,7 @@ namespace PlanningPoker.Services.Auth
     public interface IAuthService
     {
         public Task<AuthResponse> RegisterAsync(RegisterRequest request);
+        Task<UserDto> GetCurrentUserAsync(Guid userId);
         public Task<AuthResponse> LoginAsync(LoginRequest request);
         public Task<AuthResponse> RefreshTokenAsync(string refreshToken);
     }
