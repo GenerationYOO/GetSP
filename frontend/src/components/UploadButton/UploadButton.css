@@ -1,0 +1,11 @@
+.uploadButton{
+  font-size: 12px;
+  color: var(--color-action-text);
+  background-color: var(--color-action);
+
+  border: none;
+  border-radius: 5px;
+}
+.uploadButtonInput {
+  display: none;
+}

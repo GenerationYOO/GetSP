@@ -1,0 +1,14 @@
+.authSwitchButton{
+  width: 100%;
+  padding: 11px 32px;
+  border-radius: 15px;
+  border: none;
+  background-color: var(--color-action);
+  color: var(--color-action-text);
+}
+.authSwitchButton:hover{
+  background-color: var(--color-action-hover);
+}
+.authSwitchButton:active{
+  background-color: var(--color-action-active);
+}

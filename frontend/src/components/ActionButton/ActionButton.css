@@ -1,0 +1,24 @@
+.actionButton {
+  width: 100%;
+  border: none;
+  border-radius: 15px;
+  padding: 20px ;
+  color: var(--color-action-text);
+  font-size: 20px;
+  background-color: var(--color-action);
+}
+.actionButton:hover {
+  background-color: var(--color-action-hover);
+}
+.actionButton:active {
+  background-color: var(--color-action-active);
+}
+.actionButton.isDisabled {
+  width: 100%;
+  border: none;
+  border-radius: 15px;
+  padding: 20px ;
+  color: var(--color-text-muted);
+  font-size: 20px;
+  background-color: var(--color-control-disabled);
+}

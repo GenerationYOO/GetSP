@@ -1,0 +1,103 @@
+.inputTitle{
+  padding-bottom: 12px;
+  color: var(--color-text-label);
+  font-weight: 400;
+  font-size: 18px;
+  cursor: default;
+}
+.inputWrapper{
+  position: relative;
+  display: flex;
+}
+.inputLeftIcon{
+  position: absolute;
+  top: 50%;
+  left: 7px;
+  width: 24px;
+  height: 24px;
+  transform: translateY(-50%);
+}
+.inputRightIcon{
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  transform: translateY(-50%);
+}
+.inputField{
+  width: 100%;
+  height: 48px;
+  border: 2px solid var(--color-input-border);
+  border-radius: 7px;
+  padding: 0 calc(16px + 24px);
+  padding-top: 2px;
+}
+.inputField:hover{
+  border-color: var(--color-input-border-hover);
+  outline: none;
+}
+.inputField:focus{
+  border-color: var(--color-input-border-focus);
+  outline: none;
+}
+.inputField.hasError{
+  border-color: var(--color-error);
+}
+.inputRightIconButton{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.inputRightButton {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 10px;
+  color: var(--color-action-text);
+  font-size: 12px;
+  background-color: var(--color-action);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.inputField:has(+ .inputRightButton) {
+  padding-right: 90px;
+}
+
+.inputMessage {
+  font-size: 12px;
+}
+.inputMessage.hasError {
+  min-height: 19px;
+}
+.inputError {
+  visibility: hidden;
+  min-height: 15px;
+  margin: 0;
+  color: var(--color-error);
+  line-height: 15px;
+}
+.inputError.isVisible {
+  visibility: visible;
+}
+.inputDescription {
+  margin: 0;
+  padding-top: 9px;
+  color: var(--color-text-description);
+  line-height: 15px;
+}
+.inputField.passwordInput::placeholder {
+  font-size: 10px;
+}
+.inputField:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset;
+  -webkit-text-fill-color: var(--color-text-primary);
+}
