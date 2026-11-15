@@ -15,35 +15,6 @@
   align-items: center;
   gap: 10px;
 }
-.taskPreviewBlockPriority{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 21px;
-  padding: 0 8px;
-  border-radius: 10px;
-  background-color: var(--color-control-disabled);
-  color: var(--color-tag-text-black);
-  font-weight: 400;
-  font-size: 11px;
-}
-.taskPreviewBlockPriority.Normal{
-  background-color: var(--color-tag-background-normal);
-}
-.taskPreviewBlockPriority.Urgent{
-  background-color: var(--color-tag-background-urgent);
-  color: var(--color-tag-text-white);
-}
-.taskPreviewBlockPriority.Critical{
-  background-color: var(--color-tag-background-critical);
-}
-.taskPreviewBlockPriority.Major{
-  background-color: var(--color-tag-background-major);
-}
-.taskPreviewBlockPriority.Minor{
-  background-color: var(--color-tag-background-minor);
-  color: var(--color-tag-text-white);
-}
 .taskPreviewBlockMain{
   display: flex;
   flex-direction: column;
@@ -77,6 +48,7 @@
   max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  overscroll-behavior: contain;
   padding-bottom: 4px;
   scrollbar-width: none;
   mask-image: linear-gradient(

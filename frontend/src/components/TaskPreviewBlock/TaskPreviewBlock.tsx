@@ -1,6 +1,8 @@
 import "./TaskPreviewBlock.css"
+import "../../styles/taskPriority.css"
 import pencil from "../../assets/icons/pencil.svg"
 import urn from "../../assets/icons/urn.svg"
+import { getPriorityClassName } from "../../utils/taskPriority"
 
 type TaskPreviewBlockProps = {
   id: string
@@ -10,11 +12,6 @@ type TaskPreviewBlockProps = {
   tags: string[]
 }
 
-type RussianPriority = | "Обычная"
-  | "Неотложная"
-  | "Критическая"
-  | "Серьезная"
-  | "Незначительная"
 
 export function TaskPreviewBlock({
   id,
@@ -23,15 +20,8 @@ export function TaskPreviewBlock({
   description,
   tags }
   : TaskPreviewBlockProps) {
-  const priorityMap: Record<RussianPriority, string> = {
-    "Обычная": "Normal",
-    "Неотложная": "Urgent",
-    "Критическая": "Critical",
-    "Серьезная": "Major",
-    "Незначительная": "Minor"
-  }
 
-  const translatedPriority = priorityMap[priority as RussianPriority]
+  const translatedPriority = getPriorityClassName(priority)
 
   function handleTagsWheel(event: React.WheelEvent<HTMLDivElement>) {
     if (event.deltaY !== 0) {
