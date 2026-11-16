@@ -6,6 +6,7 @@ import { InputForm } from "../../components/InputForm/InputForm"
 import { FormContainer } from "../../components/FormContainer/FormContainer"
 import { SpreadsheetUploader } from "../../components/SpreadsheetUploader/SpreadsheetUploader"
 import { ActionButton } from "../../components/ActionButton/ActionButton"
+import { useNavigate } from "react-router-dom"
 import pensilLineIcon from "../../assets/icons/pencil-line.svg"
 import YouTrackIcon from "../../assets/icons/youtrack.svg"
 
@@ -16,6 +17,7 @@ type ImportFormErrors = {
   youTrackLink?: string;
 };
 export function SessionCreation() {
+  const navigate = useNavigate();
   const [sessionName, setSessionName] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [youTrackLink, setYouTrackLink] = useState("");
@@ -95,6 +97,7 @@ export function SessionCreation() {
           <ActionButton
             text="Импорт"
             disabled={!canImport}
+            onClick={() =>navigate('../create-session/preview')}
           />
         </FormContainer>
       </SurfaceCard>
