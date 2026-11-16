@@ -1,5 +1,5 @@
 import './Register.css'
-import { InputRegisterForm } from '../../components/InputRegisterForm/InputRegisterForm'
+import { InputForm } from '../../components/InputForm/InputForm'
 import userIcon from '../../assets/icons/user1.svg'
 import emailIcon from '../../assets/icons/envelope.svg'
 import passwordIcon from '../../assets/icons/lock.svg'
@@ -9,8 +9,11 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { isAxiosError } from 'axios'
 import { registerUser } from '../../api/register'
-import { AuthButton } from '../../components/AuthButton/AuthButton'
+import { ActionButton } from '../../components/ActionButton/ActionButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
+import { PageLayout } from '../../components/PageLayout/PageLayout'
+import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
+import { FormContainer } from '../../components/FormContainer/FormContainer'
 
 type RegisterFormData = {
   name: string;
@@ -82,6 +85,7 @@ export function Register() {
     confirmPassword: ''
   })
   const [errors, setErrors] = useState<RegisterFormErrors>({});
+  const [formError, setFormError] = useState<string>();
 
   const [touched, setTouched] = useState({
     name: false,
@@ -111,6 +115,7 @@ export function Register() {
       newErrors.email = 'Введите вашу электронную почту';
     }
     setErrors(newErrors);
+    setFormError(undefined);
 
     return Object.keys(newErrors).length === 0;
   }
@@ -127,14 +132,24 @@ export function Register() {
         console.error('Ошибка при регистрации:', error);
 
         if (isAxiosError(error)) {
-          const validationErrors = error.response?.data?.errors as
-            | RegisterValidationErrors
-            | undefined;
+          const data = error.response?.data;
+          const validationErrors = data?.errors as RegisterValidationErrors | undefined;
+          const fieldErrors = getBackendErrors(validationErrors);
+          const generalError = data?.message ||
+            Object.values(validationErrors ?? {}).flat().join(' ') ||
+            'Ошибка регистрации';
 
           setErrors(prev => ({
             ...prev,
-            ...getBackendErrors(validationErrors)
+            ...fieldErrors
           }));
+          setFormError(
+            Object.keys(fieldErrors).length === 0 ? generalError : undefined
+          );
+        } else if (error instanceof Error) {
+          setFormError(error.message);
+        } else {
+          setFormError('Неизвестная ошибка');
         }
       }
     }
@@ -142,6 +157,7 @@ export function Register() {
 
   function handleNameChange(value: string) {
     setFormData(prev => ({ ...prev, name: value }));
+    setFormError(undefined);
 
     if (touched.name) {
       setErrors(prev => ({
@@ -161,6 +177,7 @@ export function Register() {
 
   function handleEmailChange(value: string) {
     setFormData(prev => ({ ...prev, email: value }));
+    setFormError(undefined);
 
     if (touched.email) {
       setErrors(prev => ({
@@ -183,6 +200,7 @@ export function Register() {
 
   function handlePasswordChange(value: string) {
     setFormData(prev => ({ ...prev, password: value }));
+    setFormError(undefined);
 
     if (touched.password || touched.confirmPassword) {
       setErrors(prev => ({
@@ -205,6 +223,7 @@ export function Register() {
 
   function handleConfirmPasswordChange(value: string) {
     setFormData(prev => ({ ...prev, confirmPassword: value }));
+    setFormError(undefined);
 
     if (touched.confirmPassword) {
       setErrors(prev => ({
@@ -226,14 +245,14 @@ export function Register() {
   }
 
   return (
-    <div className="registerPage">
-      <div className="registerForm">
+    <PageLayout>
+      <SurfaceCard>
         <div className="projectLogo"></div>
         <h2 className="registerTitle">Регистрация</h2>
         <p className="registerDescription">Создание нового аккаунта</p>
 
-        <form className="registerFormFields" onSubmit={handleRegister}>
-          <InputRegisterForm
+        <FormContainer onSubmit={handleRegister}>
+          <InputForm
             title="Ваше имя"
             type="name"
             value={formData.name}
@@ -243,7 +262,7 @@ export function Register() {
             error={errors.name}
             onBlur={handleNameBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Электронная почта"
             type="email"
             value={formData.email}
@@ -253,7 +272,7 @@ export function Register() {
             error={errors.email}
             onBlur={handleEmailBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Пароль"
             type="password"
             value={formData.password}
@@ -265,23 +284,26 @@ export function Register() {
             error={errors.password}
             onBlur={handlePasswordBlur}
           />
-          <InputRegisterForm
-            title="Повторите пароль"
-            type="password"
-            value={formData.confirmPassword}
-            placeholder="• • • • • • • •"
-            leftIcon={passwordIcon}
-            rightIcon={eyeIcon}
-            rightIconActive={eyeSlashIcon}
-            onChange={handleConfirmPasswordChange}
-            onBlur={handleConfirmPasswordBlur}
-            error={errors.confirmPassword}
-            description='Минимальная длина пароля - 8'
-          />
-          <AuthButton
+          <div className="lastInput">
+            <InputForm
+              title="Повторите пароль"
+              type="password"
+              value={formData.confirmPassword}
+              placeholder="• • • • • • • •"
+              leftIcon={passwordIcon}
+              rightIcon={eyeIcon}
+              rightIconActive={eyeSlashIcon}
+              onChange={handleConfirmPasswordChange}
+              onBlur={handleConfirmPasswordBlur}
+              error={errors.confirmPassword}
+              description='Минимальная длина пароля - 8'
+            />
+          </div>
+
+          <ActionButton
             text="Зарегистрироваться"
           />
-        </form>
+        </FormContainer>
         <div className="registerFooter">
           <p className="registerFooterDescription">Уже есть аккаунт?</p>
           <AuthSwitch
@@ -289,7 +311,8 @@ export function Register() {
             onClick={() => navigate("/login")}
           />
         </div>
-      </div>
-    </div>
+        {formError && <p className="registerFormError">{formError}</p>}
+      </SurfaceCard>
+    </PageLayout>
   )
 }

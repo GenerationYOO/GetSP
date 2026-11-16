@@ -1,4 +1,4 @@
-import './InputRegisterForm.css'
+import './InputForm.css'
 import { useState } from 'react';
 
 
@@ -12,6 +12,11 @@ type Props = {
   leftIcon: string;
   rightIcon?: string;
   rightIconActive?: string;
+  disabled?: boolean;
+
+  rightButtonText?: string;
+  onRightButtonClick?: () => void;
+
   description?: string;
   error?: string;
   onBlur?: () => void;
@@ -45,19 +50,19 @@ function getInputType(
 function getInputMessage(
   error?: string,
   description?: string
-) : React.ReactNode {
-  if(error) {
+): React.ReactNode {
+  if (error) {
     return <p className="inputError isVisible">{error}</p>;
   }
-  if(description) {
+  if (description) {
     return <p className="inputDescription">{description}</p>;
   }
   return <p className="inputError">
-      {'\u00A0'}
-    </p>;
+    {'\u00A0'}
+  </p>;
 }
 
-export function InputRegisterForm(props: Props) {
+export function InputForm(props: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const inputClassName = getInputClassName(props.type, props.error);
   const inputType = getInputType(props.type, isPasswordVisible);
@@ -72,6 +77,7 @@ export function InputRegisterForm(props: Props) {
           type={inputType}
           placeholder={props.placeholder}
           value={props.value}
+          disabled={props.disabled}
           onChange={(e) => props.onChange?.(e.target.value)}
           onBlur={props.onBlur}
         />
@@ -83,6 +89,16 @@ export function InputRegisterForm(props: Props) {
             <img className='inputRightIcon'
               src={isPasswordVisible ? props.rightIconActive : props.rightIcon}
               alt="right icon" />
+          </button>
+        )}
+        {props.rightButtonText && (
+          <button
+            className="inputRightButton"
+            type="button"
+            disabled={props.disabled}
+            onClick={props.onRightButtonClick}
+          >
+            {props.rightButtonText}
           </button>
         )}
       </div>

@@ -1,5 +1,5 @@
 import './Login.css'
-import { InputRegisterForm } from '../../components/InputRegisterForm/InputRegisterForm'
+import { InputForm } from '../../components/InputForm/InputForm'
 import emailIcon from '../../assets/icons/envelope.svg'
 import passwordIcon from '../../assets/icons/lock.svg'
 import eyeIcon from '../../assets/icons/eye.svg'
@@ -9,8 +9,11 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { isAxiosError } from 'axios'
 import { loginUser } from '../../api/login'
-import { AuthButton } from '../../components/AuthButton/AuthButton'
+import { ActionButton } from '../../components/ActionButton/ActionButton'
 import { AuthSwitch } from '../../components/AuthSwitch/AuthSwitch'
+import { PageLayout } from '../../components/PageLayout/PageLayout'
+import { SurfaceCard } from '../../components/SurfaceCard/SurfaceCard'
+import { FormContainer } from '../../components/FormContainer/FormContainer'
 
 type LoginFormData = {
   email: string;
@@ -51,7 +54,7 @@ export function Login() {
     rememberMe: false
   })
   const [errors, setErrors] = useState<LoginFormErrors>({});
-
+  const [formError, setFormError] = useState<string>();
   const [touched, setTouched] = useState({
     email: false,
     password: false
@@ -67,6 +70,7 @@ export function Login() {
     }
 
     setErrors(newErrors);
+    setFormError(undefined);
 
     return Object.keys(newErrors).length === 0;
   }
@@ -78,32 +82,36 @@ export function Login() {
     if (isValid) {
       try {
         await loginUser(formData.email, formData.password, formData.rememberMe);
-        navigate('/home');
+        navigate('/create-session');
       } catch (error) {
         console.error('Ошибка при входе:', error);
 
         if (isAxiosError(error)) {
           const data = error.response?.data;
-
-          const validationErrors = data?.errors as
-            | LoginValidationErrors
-            | undefined;
-
-          const backendErrors = getBackendErrors(validationErrors);
+          const validationErrors = data?.errors as LoginValidationErrors | undefined;
+          const fieldErrors = getBackendErrors(validationErrors);
+          const generalError = data?.message ||
+            Object.values(validationErrors ?? {}).flat().join(' ') ||
+            'Ошибка регистрации';
 
           setErrors(prev => ({
             ...prev,
-            ...backendErrors,
-            ...(Object.keys(backendErrors).length === 0 && data?.message
-              ? { password: data.message }
-              : {})
+            ...fieldErrors
           }));
+          setFormError(
+            Object.keys(fieldErrors).length === 0 ? generalError : undefined
+          );
+        } else if (error instanceof Error) {
+          setFormError(error.message);
+        } else {
+          setFormError('Неизвестная ошибка');
         }
       }
     }
   }
 
   async function handleEmailChange(value: string) {
+    setFormError(undefined);
     setFormData(prev => ({
       ...prev,
       email: value
@@ -131,6 +139,7 @@ export function Login() {
   }
 
   async function handlePasswordChange(value: string) {
+    setFormError(undefined);
     setFormData(prev => ({
       ...prev,
       password: value
@@ -157,6 +166,7 @@ export function Login() {
   }
 
   async function handleCheckboxChange(checked: boolean) {
+    setFormError(undefined);
     setFormData(prev => ({
       ...prev,
       rememberMe: checked
@@ -164,13 +174,13 @@ export function Login() {
   }
 
   return (
-    <div className="loginPage">
-      <div className="loginForm">
+    <PageLayout>
+      <SurfaceCard>
         <h2 className="loginFormTitle">Добро пожаловать</h2>
         <p className="loginFormDescription">Войдите в свою учетную запись</p>
 
-        <form className="loginFormFields" onSubmit={handleLogin}>
-          <InputRegisterForm
+        <FormContainer onSubmit={handleLogin}>
+          <InputForm
             title="Электронная почта"
             type="email"
             value={formData.email}
@@ -180,7 +190,7 @@ export function Login() {
             error={errors.email}
             onBlur={handleEmailBlur}
           />
-          <InputRegisterForm
+          <InputForm
             title="Пароль"
             type="password"
             placeholder="• • • • • • • •"
@@ -199,10 +209,10 @@ export function Login() {
             />
             <label htmlFor="checkbox">Запомнить меня</label>
           </div>
-          <AuthButton
+          <ActionButton
             text="Войти"
           />
-        </form>
+        </FormContainer>
         <div className="loginFooter">
           <p className="loginFooterDescription">Еще нет аккаунта?</p>
           <AuthSwitch
@@ -210,8 +220,8 @@ export function Login() {
             onClick={() => navigate("/register")}
           />
         </div>
-
-      </div>
-    </div>
+        {formError && <p className="loginFormError">{formError}</p>}
+      </SurfaceCard>
+    </PageLayout>
   )
 }

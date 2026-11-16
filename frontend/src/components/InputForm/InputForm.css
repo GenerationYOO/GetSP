@@ -1,8 +1,8 @@
 .inputTitle{
-  color: var(--color-text-label);
-  font-size: 18px;
-  font-weight: 400;
   padding-bottom: 12px;
+  color: var(--color-text-label);
+  font-weight: 400;
+  font-size: 18px;
   cursor: default;
 }
 .inputWrapper{
@@ -11,18 +11,18 @@
 }
 .inputLeftIcon{
   position: absolute;
+  top: 50%;
+  left: 7px;
   width: 24px;
   height: 24px;
-  left: 7px;
-  top: 50%;
   transform: translateY(-50%);
 }
 .inputRightIcon{
   position: absolute;
+  top: 50%;
+  right: 12px;
   width: 24px;
   height: 24px;
-  right: 12px;
-  top: 50%;
   transform: translateY(-50%);
 }
 .inputField{
@@ -34,26 +34,44 @@
   padding-top: 2px;
 }
 .inputField:hover{
-  outline: none;
   border-color: var(--color-input-border-hover);
+  outline: none;
 }
 .inputField:focus{
-  outline: none;
   border-color: var(--color-input-border-focus);
+  outline: none;
 }
 .inputField.hasError{
   border-color: var(--color-error);
 }
 .inputRightIconButton{
   position: absolute;
-  right: 0;
   top: 0;
+  right: 0;
   width: 48px;
   height: 48px;
   border: none;
   background-color: transparent;
   cursor: pointer;
 }
+
+.inputRightButton {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 10px;
+  color: var(--color-action-text);
+  font-size: 12px;
+  background-color: var(--color-action);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.inputField:has(+ .inputRightButton) {
+  padding-right: 90px;
+}
+
 .inputMessage {
   font-size: 12px;
 }
@@ -61,11 +79,11 @@
   min-height: 19px;
 }
 .inputError {
+  visibility: hidden;
   min-height: 15px;
   margin: 0;
   color: var(--color-error);
   line-height: 15px;
-  visibility: hidden;
 }
 .inputError.isVisible {
   visibility: visible;

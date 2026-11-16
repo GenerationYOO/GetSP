@@ -108,6 +108,22 @@ namespace PlanningPoker.Services.Auth
             };
         }
 
+        public async Task<UserDto> GetCurrentUserAsync(Guid userId)
+        {
+            var user = await db.Users.FindAsync(userId);
+
+            if (user == null)
+                throw new NotFoundException("Пользователь не найден");
+
+            return new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role
+            };
+        }
+
         private async Task SaveRefreshTokenAsync(User user, string token)
         {
             var refreshToken = new RefreshToken
