@@ -1,5 +1,7 @@
 import "./TaskPreviewBlock.css"
 import "../../styles/taskPriority.css"
+import "../../styles/taskPreviewActions.css"
+import { TaskTags } from "../TaskTags/TaskTags"
 import pencil from "../../assets/icons/pencil.svg"
 import urn from "../../assets/icons/urn.svg"
 import { getPriorityClassName } from "../../utils/taskPriority"
@@ -23,13 +25,6 @@ export function TaskPreviewBlock({
 
   const translatedPriority = getPriorityClassName(priority)
 
-  function handleTagsWheel(event: React.WheelEvent<HTMLDivElement>) {
-    if (event.deltaY !== 0) {
-      event.currentTarget.scrollLeft += event.deltaY * 0.5
-      event.preventDefault()
-    }
-  }
-
   return (
     <div className="taskPreviewBlock">
       <header className="taskPreviewBlockHeader">
@@ -43,19 +38,15 @@ export function TaskPreviewBlock({
         <p className="taskPreviewBlockDescription">{description}</p>
       </main>
       <footer className="taskPreviewBlockFooter">
-        <div className="taskPreviewBlockTags" onWheel={handleTagsWheel}>
-          {tags.map((tag, index) => (
-            <span key={index} className="taskPreviewBlockTag">
-              {tag}
-            </span>
-          ))}
-        </div>
+        <TaskTags 
+          tags={tags}
+        />
         <span className="taskPreviewBlockDivider"></span>
-        <div className="taskPreviewBlockActions">
-          <button className="taskPreviewBlockActionButton">
+        <div className="taskPreviewActions">
+          <button className="taskPreviewActionButton">
             <img src={pencil} alt="Edit" />
           </button>
-          <button className="taskPreviewBlockActionButton">
+          <button className="taskPreviewActionButton">
             <img src={urn} alt="Delete" />
           </button>
         </div>
