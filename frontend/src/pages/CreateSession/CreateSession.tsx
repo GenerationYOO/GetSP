@@ -8,7 +8,7 @@ import { SpreadsheetUploader } from "../../components/SpreadsheetUploader/Spread
 import { ActionButton } from "../../components/ActionButton/ActionButton"
 import { useNavigate } from "react-router-dom"
 import pensilLineIcon from "../../assets/icons/pencil-line.svg"
-import YouTrackIcon from "../../assets/icons/youtrack.svg"
+import YouTrackIcon from "../../assets/icons/youtrack1.svg"
 
 
 type ImportFormErrors = {
@@ -97,7 +97,7 @@ export function SessionCreation() {
           <ActionButton
             text="Импорт"
             disabled={!canImport}
-            onClick={() =>navigate('../create-session/preview')}
+            onClick={() => navigate('../create-session/preview')}
           />
         </FormContainer>
       </SurfaceCard>
