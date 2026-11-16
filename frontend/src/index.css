@@ -75,7 +75,7 @@
   --color-checkbox-mark: #FFFFFF;
   --color-control-disabled: #F0F0F0;
 
-  /* Цвета тегов */
+  /* Цвета для отображения задач */
   --color-tag-text-white: #FFFFFF;
   --color-tag-text-black: #000000;
   --color-tag-background-normal: #B8E7BC;
@@ -83,6 +83,10 @@
   --color-tag-background-critical: #EE4BA7;
   --color-tag-background-major: #F5D273;
   --color-tag-background-minor: #5A5D63;
+  --color-background-tableHeader: #FCFCFC;
+  --color-text-tableHeader: #888888;
+  --color-text-tableId: #777777;
+  --color-text-tableDescription: #555555;
 }
 * {
   box-sizing: border-box;
