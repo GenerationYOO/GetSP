@@ -1,0 +1,33 @@
+.taskPreviewBlockPriority,
+.taskTablePriority{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 21px;
+  padding: 0 8px;
+  border-radius: 10px;
+  background-color: var(--color-control-disabled);
+  color: var(--color-tag-text-black);
+  font-weight: 400;
+  font-size: 11px;
+}
+.taskTablePriorityCell {
+  text-align: center;
+}
+.Normal {
+  background-color: var(--color-tag-background-normal);
+}
+.Urgent {
+  background-color: var(--color-tag-background-urgent);
+  color: var(--color-tag-text-white);
+}
+.Critical {
+  background-color: var(--color-tag-background-critical);
+}
+.Major {
+  background-color: var(--color-tag-background-major);
+}
+.Minor {
+  background-color: var(--color-tag-background-minor);
+  color: var(--color-tag-text-white);
+}

@@ -1,0 +1,42 @@
+.taskTableWrapper {
+  max-height: 100%;
+  overflow-y: auto;
+  border: 1px solid var(--color-task-preview-border);
+  border-radius: 16px;
+  scrollbar-width: none;
+}
+.taskTable{
+  width: 100%;
+  border-radius: 16px;
+  table-layout: fixed;
+  border-spacing: 0;
+}
+.taskTableIdColumn {
+  width: 8%;
+}
+.taskTableTitleColumn {
+  width: 24%;
+}
+.taskTableDescriptionColumn {
+  width: 40%;
+}
+.taskTablePriorityColumn {
+  width: 12%;
+}
+.taskTableActionsColumn {
+  width: 16%;
+}
+.taskTableHeader {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--color-background-tableHeader);
+}
+.taskTableHeader th {
+  padding: 14px 24px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--color-text-tableHeader);
+  border-bottom: 1px solid var(--color-task-preview-border);
+}

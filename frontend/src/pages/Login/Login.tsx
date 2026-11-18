@@ -82,7 +82,7 @@ export function Login() {
     if (isValid) {
       try {
         await loginUser(formData.email, formData.password, formData.rememberMe);
-        navigate('/home');
+        navigate('/create-session');
       } catch (error) {
         console.error('Ошибка при входе:', error);
 
