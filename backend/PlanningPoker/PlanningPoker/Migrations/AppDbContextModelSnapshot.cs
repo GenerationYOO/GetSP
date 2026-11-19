@@ -48,6 +48,147 @@ namespace PlanningPoker.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
+            modelBuilder.Entity("PlanningPoker.Models.Session", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("InviteCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InviteCode")
+                        .IsUnique();
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Sessions");
+                });
+
+            modelBuilder.Entity("PlanningPoker.Models.SessionParticipant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("GuestName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("JoinedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SessionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SessionParticipants");
+                });
+
+            modelBuilder.Entity("PlanningPoker.Models.SessionTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Assignee")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedAtSource")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ExternalId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("FinalStoryPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("IdealDays")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("OriginalEstimation")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Project")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Reporter")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Sprints")
+                        .HasColumnType("text");
+
+                    b.Property<string>("State")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("StoryPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Tags")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAtSource")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("Votes")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SessionId");
+
+                    b.ToTable("SessionTasks");
+                });
+
             modelBuilder.Entity("PlanningPoker.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -90,6 +231,52 @@ namespace PlanningPoker.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PlanningPoker.Models.Session", b =>
+                {
+                    b.HasOne("PlanningPoker.Models.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("PlanningPoker.Models.SessionParticipant", b =>
+                {
+                    b.HasOne("PlanningPoker.Models.Session", "Session")
+                        .WithMany("Participants")
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PlanningPoker.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Session");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PlanningPoker.Models.SessionTask", b =>
+                {
+                    b.HasOne("PlanningPoker.Models.Session", "Session")
+                        .WithMany("Tasks")
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Session");
+                });
+
+            modelBuilder.Entity("PlanningPoker.Models.Session", b =>
+                {
+                    b.Navigation("Participants");
+
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }
