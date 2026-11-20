@@ -3,10 +3,11 @@
   overflow-y: auto;
   border: 1px solid var(--color-task-preview-border);
   border-radius: 16px;
-  scrollbar-width: none;
+  overflow: auto;
 }
 .taskTable{
   width: 100%;
+  min-width: 800px;
   border-radius: 16px;
   table-layout: fixed;
   border-spacing: 0;
