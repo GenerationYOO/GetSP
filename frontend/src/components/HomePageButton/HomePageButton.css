@@ -1,0 +1,41 @@
+.home-page-button{
+  border-radius: 16px;
+  background-color: var(--color-surface);
+}
+.home-page-button__content{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  max-width: 430px;
+  height: 140px;
+  padding: 20px;
+}
+.home-page-button__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 16px;
+  text-align: left;
+}
+.home-page-button__title{
+  font-weight: 700;
+  font-size: 18px;
+}
+.home-page-button__description{
+  color: var(--color-text-description);
+  font-weight: 400;
+  font-size: 13px;
+}
+.home-page-button__arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  margin-left: auto;
+  border-radius: 8px;
+  color: var(--color-action-text);
+  font-size: 24px;
+  background-color: var(--color-action);
+}

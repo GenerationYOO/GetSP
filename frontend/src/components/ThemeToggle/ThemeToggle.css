@@ -1,0 +1,28 @@
+.themeToggle {
+  position: relative;
+  width: 46px;
+  height: 24px;
+  padding: 3px;
+  border: none;
+  border-radius: 20px;
+  background-color: #333 ;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.themeToggle__thumb {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: white;
+  transition: transform 0.2s ease;
+}
+
+/* Перемещение вправо */
+.themeToggle[aria-pressed="true"] .themeToggle__thumb {
+  transform: translateX(21px);
+}
+
+.themeToggle[aria-pressed="true"] {
+  background-color: #bdbdbd;
+}

@@ -1,0 +1,83 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  height: calc(100vh - 85px);
+}
+.home-page__content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-top: 32px;
+}
+.home-page__content__text-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 340px;
+  max-width: 600px;
+  height: 34px;
+  border-radius: 9999px;
+  background-color: var(--color-surface);
+}
+.home-page__content__text{
+  color: var(--color-text-label);
+  font-weight: 500;
+  font-size: 13px;
+}
+.home-page__content__text::before{
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background-color: #2E9A78;
+}
+.home-page__content__title{
+  font-size: 44px;
+  text-align: center;
+}
+.home-page__content__subtitle{
+  color: var(--color-text-description);
+  font-weight: 400;
+  font-size: 18px;
+  text-align: center;
+}
+.home-page__content__buttons{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 20px;
+}
+.home-page__content__buttons__create-session-button{
+  border: 1px solid #2E9A78;
+}
+.home-page__content__buttons__join-session-button{
+  border: none;
+}
+.home-page__content__buttons__join-session-button
+  .home-page-button__arrow {
+  color: var(--color-text-primary);
+  background-color: #F4F5F7;
+}
+.home-page__content__description{
+  display: flex;
+  gap: 5px;
+}
+.home-page__content__description__text{
+  color: var(--color-text-description);
+  font-size: 14px;
+}
+.home-page__content__description__button{
+  border: none;
+  color: #2E9A78;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: transparent;
+}
