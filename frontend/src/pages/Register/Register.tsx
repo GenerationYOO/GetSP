@@ -301,6 +301,7 @@ export function Register() {
           </div>
 
           <ActionButton
+            type="submit"
             text="Зарегистрироваться"
           />
         </FormContainer>
