@@ -13,7 +13,7 @@ export function ActionButton({
   className = "",
   onClick,
   disabled,
-  type = "button"
+  type = "submit"
 }: ActionButtonProps) {
   return (
     <button
