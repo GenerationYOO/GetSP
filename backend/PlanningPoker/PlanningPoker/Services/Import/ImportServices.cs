@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using CsvHelper;
+using Microsoft.VisualBasic.FileIO;
 using PlanningPoker.Models;
 using System.Globalization;
 
@@ -36,7 +37,7 @@ public class ImportService
         var columns = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         foreach (var cell in headersRow.CellsUsed())
         {
-            var headerName = cell.GetString().Trim();
+            var headerName = cell.GetString().Trim().Trim('\uFEFF', ' ', '"');
             if (!string.IsNullOrEmpty(headerName))
                 columns[headerName] = cell.Address.ColumnNumber;
         }
@@ -102,43 +103,71 @@ public class ImportService
         var orderCounter = 1;
 
         using var reader = new StreamReader(fileStream);
-        var content = reader.ReadToEnd();
+        var content = reader.ReadToEnd().TrimStart('\uFEFF');
+
         if (string.IsNullOrWhiteSpace(content))
             throw new FileValidationException("Загруженный файл пуст.");
 
-        var options = new CsvReaderOptions { FormatProvider = CultureInfo.InvariantCulture };
-        using var csv = CsvReader.FromText(content, options);
+        // Если каждая строка обёрнута в лишние тройные кавычки
+        if (content.StartsWith("\"\"\""))
+        {
+            var lines = content.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var line = lines.ElementAt(i).Trim();
+                if (line.StartsWith("\"") && line.EndsWith("\"") && line.Length >= 2)
+                    lines.SetValue(line[1..^1].Replace("\"\"", "\""), i);
+            }
+            content = string.Join("\n", lines);
+        }
 
-        if (!csv.Read())
+        // Определяем разделитель (запятая или точка с запятой)
+        var firstLine = content.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? "";
+        var delimiter = firstLine.Count(c => c == ';') > firstLine.Count(c => c == ',') ? ";" : ",";
+
+        using var stringReader = new StringReader(content);
+        using var parser = new TextFieldParser(stringReader);
+        parser.SetDelimiters(delimiter);
+        parser.HasFieldsEnclosedInQuotes = true;
+
+        if (parser.EndOfData)
             throw new FileValidationException("В файле отсутствует строка заголовков.");
-        csv.ReadHeader();
 
-        var idIndex = GetRequiredCsvIndex(csv, "ID задачи");
-        var titleIndex = GetRequiredCsvIndex(csv, "Заголовок");
+        var rawHeaders = parser.ReadFields();
+        if (rawHeaders == null || rawHeaders.Length == 0)
+            throw new FileValidationException("Не удалось прочитать заголовки файла.");
 
-        var projectIndex = GetOptionalCsvIndex(csv, "Проект");
-        var tagsIndex = GetOptionalCsvIndex(csv, "Теги");
-        var reporterIndex = GetOptionalCsvIndex(csv, "Заявитель");
-        var createdAtIndex = GetOptionalCsvIndex(csv, "Создана");
-        var updatedAtIndex = GetOptionalCsvIndex(csv, "Обновлена");
-        var isCompletedIndex = GetOptionalCsvIndex(csv, "Завершенная");
-        var priorityIndex = GetOptionalCsvIndex(csv, "Приоритет");
-        var typeIndex = GetOptionalCsvIndex(csv, "Тип");
-        var stateIndex = GetOptionalCsvIndex(csv, "Состояние");
-        var assigneeIndex = GetOptionalCsvIndex(csv, "Исполнитель");
-        var origEstIndex = GetOptionalCsvIndex(csv, "Original estimation");
-        var storyPointsIndex = GetOptionalCsvIndex(csv, "Story points");
-        var sprintsIndex = GetOptionalCsvIndex(csv, "Sprints");
-        var idealDaysIndex = GetOptionalCsvIndex(csv, "Ideal days");
-        var descriptionIndex = GetOptionalCsvIndex(csv, "Описание");
-        var votesIndex = GetOptionalCsvIndex(csv, "Голоса");
+        var columns = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        for (int i = 0; i < rawHeaders.Length; i++)
+        {
+            var cleanHeader = rawHeaders.ElementAt(i).Trim('\uFEFF', ' ', '"', '\r', '\n');
+            if (!string.IsNullOrEmpty(cleanHeader))
+                columns[cleanHeader] = i;
+        }
+
+        if (!columns.ContainsKey("ID задачи"))
+            throw new FileValidationException("Отсутствует обязательный столбец 'ID задачи'.");
+
+        if (!columns.ContainsKey("Заголовок"))
+            throw new FileValidationException("Отсутствует обязательный столбец 'Заголовок'.");
+
+        string? GetVal(string[] fields, string colName)
+        {
+            if (!columns.TryGetValue(colName, out var idx) || idx >= fields.Length)
+                return null;
+            var val = fields.ElementAt(idx)?.Trim();
+            return string.IsNullOrWhiteSpace(val) ? null : val;
+        }
 
         var rowNumber = 1;
-        while (csv.Read())
+        while (!parser.EndOfData)
         {
             rowNumber++;
-            var externalId = csv.GetString(idIndex)?.Trim();
-            var title = csv.GetString(titleIndex)?.Trim();
+            var fields = parser.ReadFields();
+            if (fields == null) continue;
+
+            var externalId = GetVal(fields, "ID задачи");
+            var title = GetVal(fields, "Заголовок");
 
             if (string.IsNullOrWhiteSpace(externalId))
             {
@@ -159,22 +188,22 @@ public class ImportService
             {
                 ExternalId = externalId,
                 Title = title.Length > 255 ? title[..255] : title,
-                Project = GetCsvString(csv, projectIndex),
-                Tags = ParseTags(GetCsvString(csv, tagsIndex)),
-                Reporter = GetCsvString(csv, reporterIndex),
-                Type = GetCsvString(csv, typeIndex),
-                State = GetCsvString(csv, stateIndex),
-                Assignee = GetCsvString(csv, assigneeIndex),
-                OriginalEstimation = GetCsvString(csv, origEstIndex),
-                Sprints = GetCsvString(csv, sprintsIndex),
-                IdealDays = GetCsvString(csv, idealDaysIndex),
-                Description = GetCsvString(csv, descriptionIndex),
-                StoryPoints = ParseNullableInt(GetCsvString(csv, storyPointsIndex)),
-                Votes = ParseNullableInt(GetCsvString(csv, votesIndex)),
-                CreatedAtSource = ParseNullableDate(GetCsvString(csv, createdAtIndex), rowNumber, "Создана", result.Warnings),
-                UpdatedAtSource = ParseNullableDate(GetCsvString(csv, updatedAtIndex), rowNumber, "Обновлена", result.Warnings),
-                IsCompleted = !string.IsNullOrWhiteSpace(GetCsvString(csv, isCompletedIndex)),
-                Priority = ParsePriority(GetCsvString(csv, priorityIndex), rowNumber, result.Warnings),
+                Project = GetVal(fields, "Проект"),
+                Tags = ParseTags(GetVal(fields, "Теги")),
+                Reporter = GetVal(fields, "Заявитель"),
+                Type = GetVal(fields, "Тип"),
+                State = GetVal(fields, "Состояние"),
+                Assignee = GetVal(fields, "Исполнитель"),
+                OriginalEstimation = GetVal(fields, "Original estimation"),
+                Sprints = GetVal(fields, "Sprints"),
+                IdealDays = GetVal(fields, "Ideal days"),
+                Description = GetVal(fields, "Описание"),
+                StoryPoints = ParseNullableInt(GetVal(fields, "Story points")),
+                Votes = ParseNullableInt(GetVal(fields, "Голоса")),
+                CreatedAtSource = ParseNullableDate(GetVal(fields, "Создана"), rowNumber, "Создана", result.Warnings),
+                UpdatedAtSource = ParseNullableDate(GetVal(fields, "Обновлена"), rowNumber, "Обновлена", result.Warnings),
+                IsCompleted = !string.IsNullOrWhiteSpace(GetVal(fields, "Завершенная")),
+                Priority = ParsePriority(GetVal(fields, "Приоритет"), rowNumber, result.Warnings),
                 Order = orderCounter++
             };
 
@@ -182,6 +211,18 @@ public class ImportService
         }
 
         return result;
+    }
+
+    private int GetCsvIndex(CsvReader csv, string columnName)
+    {
+        try
+        {
+            return csv.GetFieldIndex(columnName);
+        }
+        catch
+        {
+            return -1;
+        }
     }
 
     private string? GetCellString(IXLRow row, Dictionary<string, int> columns, string columnName)
@@ -208,31 +249,11 @@ public class ImportService
         return ParseNullableDate(cell.GetString(), rowNumber, columnName, warnings);
     }
 
-    private int GetRequiredCsvIndex(CsvReader csv, string columnName)
-    {
-        var index = GetOptionalCsvIndex(csv, columnName);
-        if (index < 0)
-            throw new FileValidationException($"Отсутствует обязательный столбец '{columnName}'.");
-        return index;
-    }
-
-    private int GetOptionalCsvIndex(CsvReader csv, string columnName)
-    {
-        try
-        {
-            return csv.GetFieldIndex(columnName);
-        }
-        catch
-        {
-            return -1;
-        }
-    }
-
     private string? GetCsvString(CsvReader csv, int index)
     {
         if (index < 0) return null;
-        var val = csv.GetString(index);
-        return string.IsNullOrWhiteSpace(val) ? null : val.Trim();
+        var val = csv.GetString(index)?.Trim(' ', '"');
+        return string.IsNullOrWhiteSpace(val) ? null : val;
     }
 
     private List<string> ParseTags(string? rawTags)
@@ -278,18 +299,26 @@ public class ImportService
             return null;
 
         var parts = value.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length == 4 && MonthMap.TryGetValue(parts[1], out var monthNumber))
+        if (parts.Length == 4)
         {
-            var normalizedDate = $"{parts[0].PadLeft(2, '0')}.{monthNumber}.{parts[2]} {parts[3]}";
+            var day = parts[0].PadLeft(2, '0');
+            var monthText = parts[1];
+            var year = parts[2];
+            var time = parts[3];
 
-            if (DateTime.TryParseExact(
-                normalizedDate,
-                "dd.MM.yyyy HH:mm",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
-                out var result))
+            if (MonthMap.TryGetValue(monthText, out var monthNumber))
             {
-                return result;
+                var normalizedDate = $"{day}.{monthNumber}.{year} {time}";
+
+                if (DateTime.TryParseExact(
+                    normalizedDate,
+                    "dd.MM.yyyy HH:mm",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
+                    out var result))
+                {
+                    return result;
+                }
             }
         }
 
