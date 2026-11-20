@@ -43,6 +43,21 @@
   color: var(--color-action-text);
   background-color: var(--color-action);
 }
+.taskPreviewSwitcherButton.isActive:hover {
+  background-color: var(--color-action-hover);
+}
+
+.taskPreviewSwitcherButton.isActive:active {
+  background-color: var(--color-action-active);
+}
+
+.taskPreviewSwitcherButton.isInactive:hover {
+  background-color: var(--color-action-secondary-hover);
+}
+
+.taskPreviewSwitcherButton.isInactive:active {
+  background-color: var(--color-action-secondary-active);
+}
 .taskPreviewHeaderTitle{
   display: flex;
   flex-direction: column;
@@ -97,10 +112,49 @@
   width: 300px;
   padding: 14px 24px;
   color: var(--color-text-label);
-  background-color: var(--color-control-disabled);
+  background-color: var(--color-action-secondary);
 }
 .taskPreviewFooterStartButton {
   width: 300px;
   padding: 14px 24px;
   background-color: var(--color-action);
+}
+.taskPreviewFooterBackButton:hover{
+  background-color: var(--color-action-secondary-hover);
+}
+.taskPreviewFooterBackButton:active{
+  background-color: var(--color-action-secondary-active);
+}
+@media(max-width: 900px){
+  .taskPreviewHeader {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 0 0 20px;
+    text-align: center;
+  }
+  .taskPreviewSwitcher {
+    align-items: center;
+    gap: 10px;
+  }
+  .taskPreviewHeaderTitle {
+    gap: 4px;
+    order: -1;
+  }
+  .taskPreviewHeaderTitleMain
+  {
+    font-size: 20px;
+  }
+  .taskPreviewHeaderTitleSub{
+    display: none;
+  }
+  .taskPreviewHeaderTaskCountText {
+    font-size: 12px;
+  }
+  .taskPreviewFooterBackButton,
+  .taskPreviewFooterStartButton{
+    width: 150px;
+    padding: 6px 10px;
+    font-size: 16px;
+  }
 }

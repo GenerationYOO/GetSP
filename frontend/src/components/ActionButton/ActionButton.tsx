@@ -5,6 +5,7 @@ type ActionButtonProps = {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
 export function ActionButton({
@@ -12,11 +13,13 @@ export function ActionButton({
   className = "",
   onClick,
   disabled,
+  type = "button"
 }: ActionButtonProps) {
   return (
-    <button 
-      className={`actionButton ${className} ${disabled ? 'isDisabled' : ''}`} 
-      onClick={onClick} 
+    <button
+      type={type}
+      className={`actionButton ${className} ${disabled ? 'isDisabled' : ''}`}
+      onClick={onClick}
       disabled={disabled}>
       {text}
     </button>

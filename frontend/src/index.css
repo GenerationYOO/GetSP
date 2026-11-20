@@ -61,6 +61,11 @@
   --color-action-active: #030303;
   --color-action-text: #FFFFFF;
 
+  /* Вторичное действие */
+  --color-action-secondary: #EEEEEE;
+  --color-action-secondary-hover: #E0E0E0;
+  --color-action-secondary-active: #CCCCCC;
+
   /* Поля */
   --color-input-border: #585858;
   --color-input-border-hover: #202020;
