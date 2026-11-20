@@ -6,6 +6,9 @@ import { TaskPreviewBlock } from "../../components/TaskPreviewBlock/TaskPreviewB
 import { TaskTable } from "../../components/TaskTable/TaskTable"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import { useLocation } from "react-router-dom"
+import { getPriorityLabel } from "../../utils/taskPriority"
+import type { ImportPreviewResponse } from "../../api/importPreview"
 
 export type TaskPreview = {
   id: string;
@@ -15,82 +18,21 @@ export type TaskPreview = {
   tags: string[];
 }
 
-const mockTasks: TaskPreview[] = [
-  {
-    id: "#125",
-    priority: "Критическая",
-    title: "Замена логотипа",
-    description: `Кратко задачи описанию выработки строки накленных.
-              Кратко задачи описанию выработки строки накленных.
-              Кратко задачи описанию выработки строки накленных.
-              Кратко задачи описанию выработки строки накленных.
-              Кратко задачи описанию выработки строки накленных.
-              Кратко задачи описанию выработки строки накленных.
-              Кратко задачи описанию выработки строки накленных.
-              `,
-    tags: ["#разработка", "#баг", "#дизайн"]
-  },
-  {
-    id: "#125",
-    priority: "Критическая",
-    title: "Замена логотипа",
-    description: "Кратко задачи описанию выработки строки накленных.",
-    tags: ["#разработка", "#баг", "#дизайн", "#баг", "#дизайн", "#баг", "#дизайн"]
-  },
-  {
-    id: "#127",
-    priority: "Обычная",
-    title: "Добавить фильтры задач",
-    description: "Добавить фильтрацию задач по статусу и приоритету.",
-    tags: ["#разработка", "#фильтры"],
-  },
-  {
-    id: "#128",
-    priority: "Неотложная",
-    title: "Исправить загрузку файла",
-    description: "Большие файлы не загружаются с первого раза.",
-    tags: ["#баг", "#загрузка"],
-  },
-  {
-    id: "#129",
-    priority: "Серьезная",
-    title: "Обновить страницу профиля",
-    description: "Добавить редактирование личных данных пользователя.",
-    tags: ["#профиль", "#дизайн"],
-  },
-  {
-    id: "#130",
-    priority: "Незначительная",
-    title: "Изменить подписи кнопок",
-    description: "Заменить старые подписи кнопок на более понятные.",
-    tags: ["#тексты", "#интерфейс"],
-  },
-  {
-    id: "#131",
-    priority: "Обычная",
-    title: "Добавить уведомления",
-    description: "Показывать уведомление после успешного сохранения задачи.",
-    tags: ["#уведомления", "#разработка"],
-  },
-  {
-    id: "#132",
-    priority: "Серьезная",
-    title: "Оптимизировать список задач",
-    description: "Ускорить отображение большого количества задач.",
-    tags: ["#производительность", "#оптимизация"],
-  },
-  {
-    id: "#133",
-    priority: "Незначительная",
-    title: "Обновить документацию",
-    description: "Добавить описание новых возможностей проекта.",
-    tags: ["#документация"],
-  }
-]
+type TaskPreviewLocationState = {
+  sessionName: string;
+  data: ImportPreviewResponse;
+};
 
 export function TaskPreview() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as TaskPreviewLocationState | null;
   const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
+
+  if (!state) {
+    return <p>Данные предпросмотра не найдены</p>;
+  }
+  const { sessionName, data } = state;
 
   return (
     <PageLayout>
@@ -117,7 +59,7 @@ export function TaskPreview() {
           </div>
           <div className="taskPreviewHeaderTitle">
             <h2 className="taskPreviewHeaderTitleMain">
-              Создание сессии
+              {sessionName}
             </h2>
             <h3 className="taskPreviewHeaderTitleSub">
               Предпросмотр задач
@@ -125,20 +67,20 @@ export function TaskPreview() {
           </div>
           <div className="taskPreviewHeaderTaskCount">
             <h3 className="taskPreviewHeaderTaskCountText">
-              Загружено задач: 9
+              Загружено задач: {data.tasks.length}
             </h3>
           </div>
         </header>
         <div className=
-        {`taskPreviewContent ${viewMode === "cards" 
-          ? "taskPreviewContentCards" : "taskPreviewContentTable"}`}>
+          {`taskPreviewContent ${viewMode === "cards"
+            ? "taskPreviewContentCards" : "taskPreviewContentTable"}`}>
           {viewMode === "cards" ? (
             <div className="cards">
-              {mockTasks.map((task) => (
+              {data.tasks.map((task) => (
                 <TaskPreviewBlock
-                  key={task.id}
-                  id={task.id}
-                  priority={task.priority}
+                  key={task.externalId}
+                  id={task.externalId}
+                  priority={getPriorityLabel(task.priority)}
                   title={task.title}
                   description={task.description}
                   tags={task.tags}
@@ -146,8 +88,14 @@ export function TaskPreview() {
               ))}
             </div>
           ) : (
-            <TaskTable 
-              tasks={mockTasks}
+            <TaskTable
+              tasks={data.tasks.map((task) => ({
+                id: task.externalId,
+                priority: getPriorityLabel(task.priority),
+                title: task.title,
+                description: task.description,
+                tags: task.tags
+              }))}
             />
           )}
 

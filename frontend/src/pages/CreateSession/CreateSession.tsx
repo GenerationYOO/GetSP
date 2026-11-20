@@ -9,6 +9,7 @@ import { ActionButton } from "../../components/ActionButton/ActionButton"
 import { useNavigate } from "react-router-dom"
 import pensilLineIcon from "../../assets/icons/pencil-line.svg"
 import YouTrackIcon from "../../assets/icons/youtrack1.svg"
+import { previewImport } from "../../api/importPreview";
 
 
 type ImportFormErrors = {
@@ -25,6 +26,21 @@ export function SessionCreation() {
 
   const canImport = Boolean(youTrackLink.trim() || file && sessionName.trim());
 
+  async function handleImport(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!validateForm() || !file) {
+      return;
+    }
+
+    try {
+      const data = await previewImport(file);
+
+      navigate("../create-session/preview", { state: { sessionName, data } });
+    } catch (error) {
+      console.error("Ошибка импорта:", error);
+    }
+  }
+
   function validateForm(): boolean {
     const newErrors: ImportFormErrors = {};
     if (!sessionName.trim()) {
@@ -36,18 +52,6 @@ export function SessionCreation() {
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }
-
-  async function handleImport(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
-    if (file) {
-      console.log("Importing from file:", file);
-    } else if (youTrackLink.trim()) {
-      console.log("Importing from YouTrack link:", youTrackLink);
-    }
   }
 
   async function onRightButtonClick() {
@@ -97,7 +101,7 @@ export function SessionCreation() {
           <ActionButton
             text="Импорт"
             disabled={!canImport}
-            onClick={() => navigate('../create-session/preview')}
+            type="submit"
           />
         </FormContainer>
       </SurfaceCard>
