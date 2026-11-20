@@ -22,7 +22,7 @@ public class ImportController : ControllerBase
 
     [HttpPost("preview")]
     [RequestSizeLimit(MaxFileSizeBytes)]
-    public IActionResult Preview([FromForm] IFormFile? file)
+    public IActionResult Preview(IFormFile? file)
     {
         if (file == null || file.Length == 0)
         {
