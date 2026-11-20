@@ -44,12 +44,14 @@ export function TaskPreview() {
             </h3>
             <div className="taskPreviewSwitcherButtons">
               <ActionButton
+                type="button"
                 className={`taskPreviewSwitcherButton ${viewMode === "cards" ? "isActive" : "isInactive"
                   }`}
                 text="Карточки"
                 onClick={() => setViewMode("cards")}
               />
               <ActionButton
+                type="button"
                 className={`taskPreviewSwitcherButton ${viewMode === "table" ? "isActive" : "isInactive"
                   }`}
                 text="Таблица"
@@ -102,11 +104,13 @@ export function TaskPreview() {
         </div>
         <footer className="taskPreviewFooter">
           <ActionButton
+            type="button"
             className="taskPreviewFooterBackButton"
             text="Назад"
             onClick={() => navigate('../create-session')}
           />
           <ActionButton
+            type="button"
             className="taskPreviewFooterStartButton"
             text="Начать сессию"
           />
