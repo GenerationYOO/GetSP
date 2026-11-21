@@ -29,4 +29,12 @@ public class SessionsController : ControllerBase
 
         return StatusCode(201, result);
     }
+
+    [HttpGet("join/{code}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetByCode(string code)
+    {
+        var session = await sessionService.GetSessionByCodeAsync(code);
+        return Ok(session);
+    }
 }

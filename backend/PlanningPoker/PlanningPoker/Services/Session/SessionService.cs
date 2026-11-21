@@ -23,6 +23,24 @@ public class SessionService : ISessionService
         this.configuration = configuration;
     }
 
+    public async Task<SessionDto> GetSessionByCodeAsync(string inviteCode)
+    {
+        var session = await db.Sessions
+            .Include(s => s.Owner)
+            .Include(s => s.Participants)
+            .FirstOrDefaultAsync(s => s.InviteCode == inviteCode);
+        if (session == null)
+            throw new NotFoundException("Сессия с таким кодом не найдена");
+        return new SessionDto
+        {
+            Id = session.Id,
+            Name = session.Name,
+            OwnerName = session.Owner.Username,
+            Status = session.Status.ToString(),
+            ParticipantCount = session.Participants.Count
+        };
+    }
+
     public async Task<CreateSessionResponse> CreateSessionAsync(CreateSessionRequest request, Guid userId)
     {
         var tasks = new List<ImportedTaskDto>();
@@ -97,8 +115,8 @@ public class SessionService : ISessionService
             using var qrGenerator = new QRCodeGenerator();
             using var qrCodeData = qrGenerator.CreateQrCode(inviteLink, QRCodeGenerator.ECCLevel.Q);
             using var qrCode = new PngByteQRCode(qrCodeData);
-            byte[] qrCodeBytes = qrCode.GetGraphic(20);
-            string base64 = Convert.ToBase64String(qrCodeBytes);
+            var qrCodeBytes = qrCode.GetGraphic(20);
+            var base64 = Convert.ToBase64String(qrCodeBytes);
 
             return new CreateSessionResponse
             {
