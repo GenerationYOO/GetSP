@@ -7,6 +7,7 @@ using PlanningPoker.Middleware;
 using PlanningPoker.Services;
 using PlanningPoker.Services.Auth;
 using PlanningPoker.Services.Generate;
+using PlanningPoker.Services.Session;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<ImportService>();
 builder.Services.AddSingleton<CodeGeneratorService>();
+builder.Services.AddScoped<ISessionService, SessionService>();
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 var keyBytes = Encoding.UTF8.GetBytes(jwtKey!);
