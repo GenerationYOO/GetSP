@@ -24,39 +24,16 @@ public class ImportController : ControllerBase
     [RequestSizeLimit(MaxFileSizeBytes)]
     public IActionResult Preview(IFormFile? file)
     {
-        if (file == null || file.Length == 0)
-        {
-            return Problem(
-                type: "https://example.com",
-                title: "Ошибка валидации файла",
-                statusCode: StatusCodes.Status400BadRequest,
-                detail: "Файл не выбран или пуст.",
-                instance: HttpContext.Request.Path
-            );
-        }
-
-        if (file.Length > MaxFileSizeBytes)
-        {
-            return Problem(
-                type: "https://example.com",
-                title: "Ошибка валидации файла",
-                statusCode: StatusCodes.Status400BadRequest,
-                detail: "Превышен максимальный размер файла (10 МБ).",
-                instance: HttpContext.Request.Path
-            );
-        }
-
+        if (file == null)
+            return GenerateProblem("Ошибка валидации файла", "Файл не был загружен.");
         var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        if (extension != ".csv" && extension != ".xlsx")
-        {
-            return Problem(
-                type: "https://example.com",
-                title: "Ошибка валидации файла",
-                statusCode: StatusCodes.Status400BadRequest,
-                detail: "Поддерживаются только файлы CSV и XLSX.",
-                instance: HttpContext.Request.Path
-            );
-        }
+        var validationResult = ValidateFile(
+            (isValid: () => file.Length > 0, detail: "Файл пуст."),
+            (isValid: () => file.Length <= MaxFileSizeBytes, detail: "Превышен максимальный размер файла (10 МБ)."),
+            (isValid: () => extension == ".csv" || extension == ".xlsx", detail: "Поддерживаются только файлы CSV и XLSX.")
+        );
+        if (validationResult != null)
+            return validationResult;
 
         try
         {
@@ -68,21 +45,10 @@ public class ImportController : ControllerBase
                 else
                     importResult = importService.ParseExcel(stream);
             }
-
             if (importResult.Tasks.Count == 0)
-            {
-                return Problem(
-                    type: "https://example.com",
-                    title: "Ошибка валидации файла",
-                    statusCode: StatusCodes.Status400BadRequest,
-                    detail: "В файле не найдено ни одной корректной задачи.",
-                    instance: HttpContext.Request.Path
-                );
-            }
-
+                return GenerateProblem("Ошибка валидации файла", "В файле не найдено ни одной корректной задачи.");
             var importId = Guid.NewGuid().ToString();
             cache.Set(importId, importResult.Tasks, TimeSpan.FromMinutes(30));
-
             return Ok(new
             {
                 importId = importId,
@@ -92,23 +58,31 @@ public class ImportController : ControllerBase
         }
         catch (FileValidationException ex)
         {
-            return Problem(
-                type: "https://example.com",
-                title: "Ошибка валидации файла",
-                statusCode: StatusCodes.Status400BadRequest,
-                detail: ex.Message,
-                instance: HttpContext.Request.Path
-            );
+            return GenerateProblem("Ошибка валидации файла", ex.Message);
         }
         catch (Exception)
         {
-            return Problem(
-                type: "https://example.com",
-                title: "Ошибка чтения файла",
-                statusCode: StatusCodes.Status400BadRequest,
-                detail: "Не удалось прочитать файл. Возможно, он повреждён или имеет неверную кодировку.",
-                instance: HttpContext.Request.Path
-            );
+            return GenerateProblem("Ошибка чтения файла", "Не удалось прочитать файл. Возможно, он повреждён или имеет неверную кодировку.");
         }
+    }
+    private ObjectResult? ValidateFile(params (Func<bool> isValid, string? detail)[] validators)
+    {
+        foreach (var (isValid, detail) in validators)
+        {
+            if (!isValid())
+                return GenerateProblem("Ошибка валидации файла", detail);
+        }
+        return null;
+    }
+
+    private ObjectResult? GenerateProblem(string? title, string? detail)
+    {
+        return Problem(
+            type: "https://example.com",
+            title: title,
+            statusCode: StatusCodes.Status400BadRequest,
+            detail: detail,
+            instance: HttpContext.Request.Path
+        );
     }
 }
