@@ -6,4 +6,5 @@ public interface ISessionService
 {
     public Task<CreateSessionResponse> CreateSessionAsync(CreateSessionRequest request, Guid userId);
     public Task<SessionDto> GetSessionByCodeAsync(string inviteCode);
+    public Task<JoinSessionResponse> JoinAsGuestAsync(string inviteCode, JoinSessionRequest request);
 }

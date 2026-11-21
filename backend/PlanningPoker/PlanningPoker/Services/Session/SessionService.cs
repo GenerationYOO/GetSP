@@ -3,6 +3,8 @@ using Microsoft.Extensions.Caching.Memory;
 using PlanningPoker.Contracts.Sessions;
 using PlanningPoker.Data;
 using PlanningPoker.Exceptions;
+using PlanningPoker.Models;
+using PlanningPoker.Services.Auth;
 using PlanningPoker.Services.Generate;
 using QRCoder;
 
@@ -14,13 +16,15 @@ public class SessionService : ISessionService
     private readonly IMemoryCache cache;
     private readonly AppDbContext db;
     private readonly CodeGeneratorService codeGenerator;
+    private readonly IJwtTokenGenerator jwtGenerator;
 
-    public SessionService(AppDbContext db, IMemoryCache cache, CodeGeneratorService codeGenerator, IConfiguration configuration)
+    public SessionService(AppDbContext db, IMemoryCache cache, CodeGeneratorService codeGenerator, IConfiguration configuration, IJwtTokenGenerator jwtGenerator)
     {
         this.db = db;
         this.cache = cache;
         this.codeGenerator = codeGenerator;
         this.configuration = configuration;
+        this.jwtGenerator = jwtGenerator;
     }
 
     public async Task<SessionDto> GetSessionByCodeAsync(string inviteCode)
@@ -56,7 +60,18 @@ public class SessionService : ISessionService
         else
             throw new ValidationException("Задачи не переданы.");
 
-        var inviteCode = codeGenerator.GenerateInviteCode();
+        string inviteCode;
+        var attempts = 0;
+        const int maxAttempts = 10;
+        do
+        {
+            inviteCode = codeGenerator.GenerateInviteCode();
+            attempts++;
+
+            if (attempts > maxAttempts)
+                throw new Exception("Не удалось сгенерировать уникальный код приглашения.");
+
+        } while (await db.Sessions.AnyAsync(s => s.InviteCode == inviteCode));
 
         using var transaction = await db.Database.BeginTransactionAsync();
 
@@ -132,5 +147,35 @@ public class SessionService : ISessionService
             await transaction.RollbackAsync();
             throw;
         }
+    }
+
+    public async Task<JoinSessionResponse> JoinAsGuestAsync(string inviteCode, JoinSessionRequest request)
+    {
+        var session = await db.Sessions
+            .FirstOrDefaultAsync(s => s.InviteCode == inviteCode);
+
+        if (session == null)
+            throw new NotFoundException("Сессия с таким кодом не найдена");
+
+
+        var participant = new Models.SessionParticipant
+        {
+            SessionId = session.Id,
+            GuestName = request.GuestName, 
+            Role = Models.ParticipantRole.Guest,
+            JoinedAt = DateTime.UtcNow
+        };
+
+        db.SessionParticipants.Add(participant);
+        await db.SaveChangesAsync();
+        var token = jwtGenerator.GenerateTokenForGuest(participant);
+
+        return new JoinSessionResponse
+        {
+            ParticipantId = participant.Id,
+            GuestName = participant.GuestName,
+            SessionId = session.Id,
+            AccessToken = token
+        };
     }
 }

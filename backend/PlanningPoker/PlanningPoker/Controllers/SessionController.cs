@@ -37,4 +37,12 @@ public class SessionsController : ControllerBase
         var session = await sessionService.GetSessionByCodeAsync(code);
         return Ok(session);
     }
+
+    [HttpPost("join/{code}")]
+    [AllowAnonymous] 
+    public async Task<IActionResult> JoinAsGuest(string code, [FromBody] JoinSessionRequest request)
+    {
+        var result = await sessionService.JoinAsGuestAsync(code, request);
+        return Ok(result);
+    }
 }

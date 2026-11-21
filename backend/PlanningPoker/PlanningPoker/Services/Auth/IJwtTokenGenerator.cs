@@ -6,5 +6,6 @@ namespace PlanningPoker.Services.Auth
     {
         public string GenerateToken(User user);
         public string GenerateRefreshToken();
+        public string GenerateTokenForGuest(SessionParticipant sessionParticipant);
     }
 }
