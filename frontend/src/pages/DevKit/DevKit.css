@@ -1,8 +1,14 @@
 .devkit {
   min-height: 100vh;
+  box-sizing: border-box;
   padding: 20px;
   color: var(--color-text-primary);
   background: var(--color-page-background);
+}
+.devkit *,
+.devkit *::before,
+.devkit *::after {
+  box-sizing: border-box;
 }
 .devkitSection {
   margin-bottom: 20px;
@@ -14,18 +20,71 @@
 .devkitGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
   gap: 20px;
 }
 .devkitCard {
-  height: 100%;
+  min-width: 0;
   border: 1px solid #d5d5d5;
   border-radius: 16px;
   padding: 24px;
   background: var(--color-surface);
+  overflow: hidden;
 }
 .devkitCardTitle {
   margin-bottom: 24px;
   color: var(--color-text-label);
   font-weight: 600;
   font-size: 14px;
+}
+.devkitCardWide {
+  width: 100%;
+}
+.devkitCardWide .taskTableWrapper {
+  max-width: 100%;
+}
+.devkitCaption {
+  margin-top: 12px;
+  color: var(--color-text-description);
+  font-size: 12px;
+}
+.devkitHeaderPreview {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-divider-line);
+  border-radius: 12px;
+  padding: 0 16px;
+  background: var(--color-surface);
+}
+.devkitHeaderPreview .header {
+  min-width: 760px;
+}
+.devkitPageLayoutPreview {
+  position: relative;
+  inset: auto;
+  min-height: 220px;
+  height: 220px;
+  max-height: 220px;
+  width: 100%;
+  justify-content: center;
+  overflow: hidden;
+  padding: 16px;
+}
+.devkitSurfaceCardPreview {
+  width: 100%;
+  max-width: 100%;
+  min-height: 120px;
+  justify-content: center;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-divider-line);
+}
+.devkitFormContainerPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 100%;
+  padding: 16px;
+}
+.devkitTaskTableCard {
+  margin-top: 20px;
 }
