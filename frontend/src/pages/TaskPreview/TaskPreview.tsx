@@ -9,6 +9,7 @@ import { useState } from "react"
 import { useLocation } from "react-router-dom"
 import { getPriorityLabel } from "../../utils/taskPriority"
 import type { ImportPreviewResponse } from "../../api/importPreview"
+import type { ImportedTask } from "../../api/importPreview"
 
 export type TaskPreview = {
   id: string;
@@ -28,11 +29,43 @@ export function TaskPreview() {
   const location = useLocation();
   const state = location.state as TaskPreviewLocationState | null;
   const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
+  const [selectedTask, setSelectedTask] = useState<ImportedTask | null>(null);
 
   if (!state) {
-    return <p>Данные предпросмотра не найдены</p>;
+    if (!import.meta.env.DEV) {
+      return <p>Данные предпросмотра не найдены</p>;
+    }
   }
-  const { sessionName, data } = state;
+  const sessionName = state?.sessionName
+    ?? new URLSearchParams(location.search).get("name")
+    ?? "Очень длинное название сессии для проверки переноса заголовка";
+  const data = state?.data ?? {
+    importId: "dev-preview",
+    warnings: [],
+    tasks: [
+      {
+        externalId: "DEV-1",
+        title: "Проверка отображения заголовка",
+        project: "GetSP",
+        tags: ["Frontend", "UI"],
+        reporter: "Developer",
+        createdAtSource: "",
+        updatedAtSource: "",
+        isCompleted: false,
+        priority: 3,
+        type: "Task",
+        state: "Open",
+        assignee: "",
+        originalEstimation: null,
+        storyPoints: null,
+        sprints: "",
+        idealDays: null,
+        description: "Тестовые данные для предпросмотра без бэкенда.",
+        votes: 0,
+        order: 1,
+      },
+    ],
+  };
 
   return (
     <PageLayout>
@@ -61,8 +94,8 @@ export function TaskPreview() {
           </div>
           <div className="taskPreviewHeaderTitle">
             <h2 className="taskPreviewHeaderTitleMain">
-              {sessionName.length > 30
-                ? sessionName.slice(0, 30) + "..."
+              {sessionName.length > 20
+                ? sessionName.slice(0, 20) + "..."
                 : sessionName}
             </h2>
             <h3 className="taskPreviewHeaderTitleSub">
@@ -83,6 +116,7 @@ export function TaskPreview() {
               {data.tasks.map((task) => (
                 <TaskPreviewBlock
                   key={task.externalId}
+                  onClick={() => setSelectedTask(task)}
                   id={task.externalId}
                   priority={getPriorityLabel(task.priority)}
                   title={task.title}
@@ -100,6 +134,7 @@ export function TaskPreview() {
                 description: task.description,
                 tags: task.tags
               }))}
+              onClick={() => setSelectedTask(task)}
             />
           )}
 

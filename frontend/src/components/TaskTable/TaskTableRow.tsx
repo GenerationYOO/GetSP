@@ -9,12 +9,13 @@ import { getPriorityClassName } from "../../utils/taskPriority";
 
 type TaskTableRowProps = {
   task: TaskPreview;
+  onClick?: () => void;
 }
 
-export function TaskTableRow({ task }: TaskTableRowProps) {
+export function TaskTableRow({ task, onClick }: TaskTableRowProps) {
   const priorityClassName = getPriorityClassName(task.priority);
   return (
-    <tr className="taskTableRow">
+    <tr className="taskTableRow" onClick={onClick}>
       <td className="taskTableId">{task.id}</td>
       <td>
         <div className="taskTableTitleAndTags">
