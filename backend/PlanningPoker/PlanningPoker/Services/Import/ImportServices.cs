@@ -121,7 +121,6 @@ public class ImportService
             content = string.Join("\n", lines);
         }
 
-        // Определяем разделитель (запятая или точка с запятой)
         var firstLine = content.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? "";
         var delimiter = firstLine.Count(c => c == ';') > firstLine.Count(c => c == ',') ? ";" : ",";
 
