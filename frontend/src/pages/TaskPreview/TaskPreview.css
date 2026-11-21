@@ -62,7 +62,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   gap: 10px;
+  min-width: 0;
+  max-width: 400px;
 }
 .taskPreviewHeaderTitleMain,
 .taskPreviewHeaderTitleSub{
@@ -138,8 +141,8 @@
     gap: 10px;
   }
   .taskPreviewHeaderTitle {
-    gap: 4px;
     order: -1;
+    gap: 4px;
   }
   .taskPreviewHeaderTitleMain
   {

@@ -61,7 +61,9 @@ export function TaskPreview() {
           </div>
           <div className="taskPreviewHeaderTitle">
             <h2 className="taskPreviewHeaderTitleMain">
-              {sessionName}
+              {sessionName.length > 30
+                ? sessionName.slice(0, 30) + "..."
+                : sessionName}
             </h2>
             <h3 className="taskPreviewHeaderTitleSub">
               Предпросмотр задач
