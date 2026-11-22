@@ -18,6 +18,8 @@
 }
 .taskPreviewBlockMain{
   display: flex;
+  min-height: 0;
+  width: 100%;
   flex-direction: column;
   justify-content: space-between;
   align-items: start;
@@ -27,6 +29,9 @@
   color: var(--color-text-main);
   font-weight: 600;
   font-size: 16px;
+  min-height: 38px;
+  line-height: 19px;
+  overflow: hidden;
 }
 .taskPreviewBlockDescription{
   height: 128px;
@@ -71,3 +76,4 @@
   width: 16px;
   height: 16px;
 }
+

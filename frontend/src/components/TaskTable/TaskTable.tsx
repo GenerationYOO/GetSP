@@ -4,10 +4,10 @@ import type { TaskPreview } from "../../pages/TaskPreview/TaskPreview";
 
 type TaskTableProps = {
   tasks: TaskPreview[];
-  onClick?: () => void;
+  onTaskClick?: (task: TaskPreview) => void;
 };
 
-export function TaskTable({ tasks, onClick }: TaskTableProps) {
+export function TaskTable({ tasks, onTaskClick }: TaskTableProps) {
   return (
     <div className="taskTableWrapper">
       <table className="taskTable">
@@ -32,7 +32,7 @@ export function TaskTable({ tasks, onClick }: TaskTableProps) {
             <TaskTableRow
               key={task.id}
               task={task}
-              onClick={onClick}
+              onTaskClick={onTaskClick}
             />
           ))}
         </tbody>
