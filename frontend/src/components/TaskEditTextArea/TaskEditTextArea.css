@@ -1,0 +1,25 @@
+.taskEditTextArea {
+  width: 100%;
+}
+.taskEditTextAreaTitle {
+  padding-bottom: 6px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 11px;
+}
+.taskEditTextAreaField {
+  width: 100%;
+  height: 120px;
+  border: 1px solid var(--color-input-border);
+  border-radius: 10px;
+  padding: 12px;
+  scrollbar-width: none;
+  overflow-y: auto;
+  font-weight: 400;
+  font-size: 14px;
+  resize: none;
+}
+.taskEditTextAreaField:focus {
+  border-color: var(--color-input-border-focus);
+  outline: none;
+}
