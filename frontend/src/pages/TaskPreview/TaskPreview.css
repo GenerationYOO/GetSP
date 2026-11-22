@@ -117,6 +117,12 @@
   color: var(--color-text-label);
   background-color: var(--color-action-secondary);
 }
+.taskPreviewFooterBackButton:hover{
+  background-color: var(--color-action-secondary-hover);
+}
+.taskPreviewFooterBackButton:active{
+  background-color: var(--color-action-secondary-active);
+}
 .taskPreviewFooterStartButton {
   width: 300px;
   padding: 14px 24px;

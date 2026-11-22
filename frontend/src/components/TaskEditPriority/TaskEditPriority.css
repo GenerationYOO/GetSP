@@ -1,0 +1,32 @@
+.taskEditPriorityTitle{
+  padding-bottom: 6px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 11px;
+}
+.taskEditPriorityButtons{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.taskEditPriorityButtons button {
+  position: relative;
+  height: 28px;
+  border: 0;
+  padding: 0 12px;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+}
+.taskEditPriorityButtons button.selected {
+  padding-left: 24px;
+}
+.taskEditPriorityButtons button.selected::before {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  font-weight: 300;
+  font-size: 16px;
+  transform: translateY(-50%);
+}

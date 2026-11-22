@@ -12,6 +12,7 @@ type TaskPreviewBlockProps = {
   title: string
   description: string
   tags: string[]
+  onClick?: () => void
 }
 
 
@@ -20,13 +21,14 @@ export function TaskPreviewBlock({
   priority,
   title,
   description,
-  tags }
-  : TaskPreviewBlockProps) {
+  tags,
+  onClick
+  }: TaskPreviewBlockProps) {
 
   const translatedPriority = getPriorityClassName(priority)
 
   return (
-    <div className="taskPreviewBlock">
+    <div className="taskPreviewBlock" onClick={onClick}>
       <header className="taskPreviewBlockHeader">
         <span className="taskPreviewBlockId">{id}</span>
         <span className={`taskPreviewBlockPriority ${translatedPriority}`}>

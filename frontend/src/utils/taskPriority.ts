@@ -2,7 +2,7 @@ type TaskPriority = | "Обычная"
   | "Неотложная"
   | "Критическая"
   | "Серьезная"
-  | "Незначительная"
+  | "Незначительная";
 
 const priorityMap: Record<TaskPriority, string> = {
   "Обычная": "Normal",
@@ -10,7 +10,7 @@ const priorityMap: Record<TaskPriority, string> = {
   "Критическая": "Critical",
   "Серьезная": "Major",
   "Незначительная": "Minor"
-}
+};
 
 const priorityLabels: Record<number, TaskPriority> = {
   0: "Обычная",
@@ -20,10 +20,21 @@ const priorityLabels: Record<number, TaskPriority> = {
   4: "Незначительная",
 };
 
+const priorityValues: Record<TaskPriority, number> = {
+    "Обычная": 0,
+    "Неотложная": 1,
+    "Критическая": 2,
+    "Серьезная": 3,
+    "Незначительная": 4,
+  };
+
 export function getPriorityClassName(priority: string): string {
   return priorityMap[priority as TaskPriority] || "Unknown";
 }
 
 export function getPriorityLabel(priority: number): string {
   return priorityLabels[priority] ?? "Неизвестная";
+}
+export function getPriorityValue(priority: string): number {
+  return priorityValues[priority as TaskPriority] ?? -1;
 }
