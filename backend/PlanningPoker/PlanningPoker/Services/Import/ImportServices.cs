@@ -2,11 +2,12 @@
 using CsvHelper;
 using Microsoft.VisualBasic.FileIO;
 using PlanningPoker.Models;
+using PlanningPoker.Services.Import;
 using System.Globalization;
 
 namespace PlanningPoker.Services;
 
-public class ImportService
+public class ImportService : IImportService
 {
     private const int MaxTasksLimit = 500;
 
