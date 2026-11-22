@@ -8,8 +8,8 @@ type Props = {
   placeholder: string;
   value?: string;
   onChange?: (value: string) => void;
-
-  leftIcon: string;
+  className?: string;
+  leftIcon?: string;
   rightIcon?: string;
   rightIconActive?: string;
   disabled?: boolean;
@@ -67,7 +67,7 @@ export function InputForm(props: Props) {
   const inputClassName = getInputClassName(props.type, props.error);
   const inputType = getInputType(props.type, isPasswordVisible);
   return (
-    <div className={"inputRegisterForm"}>
+    <div className={`inputRegisterForm ${props.className ?? ""}`}>
       <h3 className='inputTitle'>{props.title.toUpperCase()}</h3>
       <div className='inputWrapper'>
         <img className='inputLeftIcon' src={props.leftIcon} alt="left icon" />
