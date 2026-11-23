@@ -1,5 +1,5 @@
-import { api } from "./axios";
-import { setAccessToken } from "./authToken";
+import { api } from "../../../shared/api/axios";
+import { setAccessToken } from "../../../shared/api/authToken";
 
 export type AuthUser = {
   id: string;
