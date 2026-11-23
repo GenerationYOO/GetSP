@@ -9,8 +9,7 @@ import { useState } from "react"
 import { useLocation } from "react-router-dom"
 import { getPriorityLabel } from "../../shared/utils/taskPriority"
 import { TaskEditModal } from "../../shared/components/TaskEditModal/TaskEditModal"
-import type { ImportPreviewResponse } from "../../shared/api/importPreview"
-import type { ImportedTask } from "../../shared/api/importPreview"
+import type { ImportPreviewResponse, ImportedTask } from "../../modules/createSession"
 
 export type TaskPreview = {
   id: string;

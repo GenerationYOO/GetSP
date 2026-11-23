@@ -1,6 +1,6 @@
 import "./TaskEditModal.css";
 import { SurfaceCard } from "../SurfaceCard/SurfaceCard";
-import type { ImportedTask } from "../../api/importPreview"
+import type { ImportedTask } from "../../../modules/createSession";
 import { ActionButton } from "../ActionButton/ActionButton";
 import { TaskEditInputForm } from "../TaskEditInputForm/TaskEditInputForm";
 import { TaskEditTextArea } from "../TaskEditTextArea/TaskEditTextArea";

@@ -10,7 +10,6 @@ type SpreadsheetUploaderProps = {
   onFileSelect: (file: File | null) => void;
   error?: string;
   selectedFile: File | null;
-  setSelectedFile: (file: File | null) => void;
 }
 const allowedExtensions = [".xlsx", ".xls", ".csv"];
 
@@ -48,8 +47,6 @@ export function SpreadsheetUploader(props: SpreadsheetUploaderProps) {
       props.onFileSelect(null);
       return;
     }
-
-    props.setSelectedFile(file);
     props.onFileSelect(file);
   }
 

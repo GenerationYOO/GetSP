@@ -1,5 +1,8 @@
-import { api } from "./axios";
-
+export type ImportFormErrors = {
+  name?: string;
+  file?: string;
+  youTrackLink?: string;
+};
 export type ImportedTask = {
   externalId: string;
   title: string;
@@ -28,16 +31,3 @@ export type ImportPreviewResponse = {
   warnings: string[];
 }
 
-export async function previewImport(
-  file: File
-): Promise<ImportPreviewResponse> {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const { data } = await api.post<ImportPreviewResponse>(
-    "/import/preview",
-    formData
-  );
-
-  return data;
-}
