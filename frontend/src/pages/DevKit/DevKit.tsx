@@ -158,7 +158,6 @@ export function DevKit() {
           <SpreadsheetUploader
             title="Загрузите таблицу"
             selectedFile={selectedFile}
-            setSelectedFile={setSelectedFile}
             onFileSelect={setSelectedFile}
           />
         </article>

@@ -1,11 +1,11 @@
 import "./CreateSessionForm.css"
-import { FormContainer } from "../../../shared/components/FormContainer/FormContainer";
-import { InputForm } from "../../../shared/components/InputForm/InputForm";
-import { SpreadsheetUploader } from "../../../shared/components/SpreadsheetUploader/SpreadsheetUploader";
-import { ActionButton } from "../../../shared/components/ActionButton/ActionButton";
-import { useCreateSessionForm } from "../hooks/useCreateSessionForm";
-import pensilLineIcon from "../../../shared/assets/icons/pencil-line.svg"
-import YouTrackIcon from "../../../shared/assets/icons/youtrack1.svg"
+import { FormContainer } from "../../../../shared/components/FormContainer/FormContainer";
+import { InputForm } from "../../../../shared/components/InputForm/InputForm";
+import { SpreadsheetUploader } from "../../../../shared/components/SpreadsheetUploader/SpreadsheetUploader";
+import { ActionButton } from "../../../../shared/components/ActionButton/ActionButton";
+import { useCreateSessionForm } from "../../hooks/useCreateSessionForm";
+import pensilLineIcon from "../../../../shared/assets/icons/pencil-line.svg"
+import YouTrackIcon from "../../../../shared/assets/icons/youtrack1.svg"
 
 export function CreateSessionForm() {
   const {

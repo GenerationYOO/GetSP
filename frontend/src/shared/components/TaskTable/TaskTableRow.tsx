@@ -1,15 +1,15 @@
 import "./TaskTableRow.css";
 import "../../styles/taskPriority.css";
 import "../../styles/taskPreviewActions.css";
-import type { TaskPreview } from "../../../pages/TaskPreview/TaskPreview";
+import type { TaskTableRowData } from "./taskTable.types";
 import { TaskTags } from "../TaskTags/TaskTags"
 import pencil from "../../assets/icons/pencil.svg"
 import urn from "../../assets/icons/urn.svg"
 import { getPriorityClassName } from "../../utils/taskPriority";
 
 type TaskTableRowProps = {
-  task: TaskPreview;
-  onTaskClick?: (task: TaskPreview) => void;
+  task: TaskTableRowData;
+  onTaskClick?: (task: TaskTableRowData) => void;
 }
 
 export function TaskTableRow({ task, onTaskClick }: TaskTableRowProps) {

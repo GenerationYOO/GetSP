@@ -1,10 +1,10 @@
 import "./TaskTable.css";
 import { TaskTableRow } from "./TaskTableRow";
-import type { TaskPreview } from "../../../pages/TaskPreview/TaskPreview";
+import type { TaskTableRowData } from "./taskTable.types";
 
 type TaskTableProps = {
-  tasks: TaskPreview[];
-  onTaskClick?: (task: TaskPreview) => void;
+  tasks: TaskTableRowData[];
+  onTaskClick?: (task: TaskTableRowData) => void;
 };
 
 export function TaskTable({ tasks, onTaskClick }: TaskTableProps) {
