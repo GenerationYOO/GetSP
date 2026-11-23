@@ -160,7 +160,6 @@ export function useRegisterForm() {
   }
 
   return {
-    navigate,
     formData,
     errors,
     formError,

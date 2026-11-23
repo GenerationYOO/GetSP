@@ -4,7 +4,7 @@ import { InputForm } from "../../../../shared/components/InputForm/InputForm";
 import { ActionButton } from "../../../../shared/components/ActionButton/ActionButton";
 import { AuthSwitch } from "../../../../shared/components/AuthSwitch/AuthSwitch";
 import { useRegisterForm } from "../../hooks/useRegisterForm";
-
+import { useNavigate } from "react-router-dom";
 import userIcon from "../../../../shared/assets/icons/user1.svg";
 import emailIcon from "../../../../shared/assets/icons/envelope.svg";
 import passwordIcon from "../../../../shared/assets/icons/lock.svg";
@@ -13,7 +13,6 @@ import eyeSlashIcon from "../../../../shared/assets/icons/eyeOff.svg";
 
 export function RegisterForm() {
   const {
-    navigate,
     formData,
     errors,
     formError,
@@ -27,7 +26,8 @@ export function RegisterForm() {
     handleConfirmPasswordChange,
     handleConfirmPasswordBlur
   } = useRegisterForm();
-
+  const navigate = useNavigate();
+  
   return (
     <div className="registerForm">
       <div className="projectLogo"></div>
