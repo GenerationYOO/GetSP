@@ -23,7 +23,7 @@ export function TaskPreviewBlock({
   description,
   tags,
   onClick
-  }: TaskPreviewBlockProps) {
+}: TaskPreviewBlockProps) {
 
   const translatedPriority = getPriorityClassName(priority)
 
@@ -40,7 +40,7 @@ export function TaskPreviewBlock({
         <p className="taskPreviewBlockDescription">{description}</p>
       </main>
       <footer className="taskPreviewBlockFooter">
-        <TaskTags 
+        <TaskTags
           tags={tags}
         />
         <span className="taskPreviewBlockDivider"></span>

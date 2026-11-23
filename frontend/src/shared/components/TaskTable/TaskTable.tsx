@@ -1,6 +1,6 @@
 import "./TaskTable.css";
 import { TaskTableRow } from "./TaskTableRow";
-import type { TaskPreview } from "../../pages/TaskPreview/TaskPreview";
+import type { TaskPreview } from "../../../pages/TaskPreview/TaskPreview";
 
 type TaskTableProps = {
   tasks: TaskPreview[];

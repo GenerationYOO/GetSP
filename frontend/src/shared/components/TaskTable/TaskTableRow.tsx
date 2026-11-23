@@ -1,7 +1,7 @@
 import "./TaskTableRow.css";
 import "../../styles/taskPriority.css";
 import "../../styles/taskPreviewActions.css";
-import type { TaskPreview } from "../../pages/TaskPreview/TaskPreview";
+import type { TaskPreview } from "../../../pages/TaskPreview/TaskPreview";
 import { TaskTags } from "../TaskTags/TaskTags"
 import pencil from "../../assets/icons/pencil.svg"
 import urn from "../../assets/icons/urn.svg"

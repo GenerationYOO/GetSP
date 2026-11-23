@@ -1,15 +1,15 @@
 import "./CreateSession.css"
 import { useState } from "react";
-import { PageLayout } from "../../components/PageLayout/PageLayout"
-import { SurfaceCard } from "../../components/SurfaceCard/SurfaceCard"
-import { InputForm } from "../../components/InputForm/InputForm"
-import { FormContainer } from "../../components/FormContainer/FormContainer"
-import { SpreadsheetUploader } from "../../components/SpreadsheetUploader/SpreadsheetUploader"
-import { ActionButton } from "../../components/ActionButton/ActionButton"
+import { PageLayout } from "../../shared/components/PageLayout/PageLayout"
+import { SurfaceCard } from "../../shared/components/SurfaceCard/SurfaceCard"
+import { InputForm } from "../../shared/components/InputForm/InputForm"
+import { FormContainer } from "../../shared/components/FormContainer/FormContainer"
+import { SpreadsheetUploader } from "../../shared/components/SpreadsheetUploader/SpreadsheetUploader"
+import { ActionButton } from "../../shared/components/ActionButton/ActionButton"
 import { useNavigate } from "react-router-dom"
-import pensilLineIcon from "../../assets/icons/pencil-line.svg"
-import YouTrackIcon from "../../assets/icons/youtrack1.svg"
-import { previewImport } from "../../api/importPreview";
+import pensilLineIcon from "../../shared/assets/icons/pencil-line.svg"
+import YouTrackIcon from "../../shared/assets/icons/youtrack1.svg"
+import { previewImport } from "../../shared/api/importPreview";
 import { isAxiosError } from "axios";
 
 

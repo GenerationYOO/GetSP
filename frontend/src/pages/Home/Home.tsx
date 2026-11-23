@@ -1,9 +1,9 @@
 import "./Home.css";
-import { PageLayout } from "../../components/PageLayout/PageLayout";
-import { Header } from "../../components/Header/Header";
-import { HomePageButton } from "../../components/HomePageButton/HomePageButton";
-import createSessionIcon from "../../assets/icons/createSession.svg";
-import joinSessionIcon from "../../assets/icons/joiningSession.svg";
+import { PageLayout } from "../../shared/components/PageLayout/PageLayout";
+import { Header } from "../../shared/components/Header/Header";
+import { HomePageButton } from "../../shared/components/HomePageButton/HomePageButton";
+import createSessionIcon from "../../shared/assets/icons/createSession.svg";
+import joinSessionIcon from "../../shared/assets/icons/joiningSession.svg";
 import { useNavigate } from "react-router-dom";
 
 export function Home() {
