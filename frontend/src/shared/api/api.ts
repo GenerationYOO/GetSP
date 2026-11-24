@@ -2,19 +2,53 @@ import axios, {
   type AxiosError,
   type InternalAxiosRequestConfig,
 } from "axios";
-import { getAccessToken, clearAccessToken } from "./authToken";
-import { refreshSession } from "./refreshSession";
+import {
+  getAccessToken,
+  setAccessToken,
+  clearAccessToken,
+} from "./authToken";
+
+const baseURL = "/api/v1";
 
 export const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL,
   withCredentials: true,
 });
 
-let refreshPromise: Promise<boolean> | null = null;
+const refreshClient = axios.create({
+  baseURL,
+  withCredentials: true,
+});
+
+let refreshPromise: Promise<string> | null = null;
 
 type RetryConfig = InternalAxiosRequestConfig & {
-  _retry?: boolean;
+  retry?: boolean;
 };
+
+export function refreshAccessToken(): Promise<string> {
+  if (!refreshPromise) {
+    refreshPromise = refreshClient
+      .post<{ accessToken: string }>("/Auth/refresh")
+      .then(({ data }) => {
+        if (!data.accessToken) {
+          throw new Error("Refresh response did not contain an access token");
+        }
+
+        setAccessToken(data.accessToken);
+        return data.accessToken;
+      })
+      .catch((error: unknown) => {
+        clearAccessToken();
+        throw error;
+      })
+      .finally(() => {
+        refreshPromise = null;
+      });
+  }
+
+  return refreshPromise;
+}
 
 api.interceptors.request.use((config) => {
   const accessToken = getAccessToken();
@@ -33,10 +67,10 @@ api.interceptors.response.use(
     }
 
     const originalRequest = error.config as RetryConfig;
-    const url = originalRequest.url ?? "";
+    const url = (originalRequest.url ?? "").toLowerCase();
 
     if (
-      originalRequest._retry ||
+      originalRequest.retry ||
       url.includes("/auth/login") ||
       url.includes("/auth/register") ||
       url.includes("/auth/refresh")
@@ -44,36 +78,16 @@ api.interceptors.response.use(
       throw error;
     }
 
-    originalRequest._retry = true;
+    originalRequest.retry = true;
 
     try {
-      if (!refreshPromise) {
-        refreshPromise = refreshSession().finally(() => {
-          refreshPromise = null;
-        });
-      }
-
-      const refreshed = await refreshPromise;
-
-      if (!refreshed) {
-        clearAccessToken();
-        throw error;
-      }
-
-      const accessToken = getAccessToken();
-
-      if (!accessToken) {
-        clearAccessToken();
-        throw error;
-      }
-
-      originalRequest.headers.Authorization =
-        `Bearer ${accessToken}`;
+      const accessToken = await refreshAccessToken();
+      originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
       return api(originalRequest);
-    } catch {
+    } catch (refreshError) {
       clearAccessToken();
-      throw error;
+      throw refreshError;
     }
   }
 );

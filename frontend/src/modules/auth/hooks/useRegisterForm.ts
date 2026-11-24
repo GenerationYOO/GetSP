@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
-import { registerUser } from "../api/register";
+import { useAuth } from "../../../shared/auth/useAuth";
 import type {
   RegisterFormData,
   RegisterFormErrors,
@@ -16,6 +16,7 @@ import {
 
 export function useRegisterForm() {
   const navigate = useNavigate()
+  const { register } = useAuth()
   const [formData, setFormData] = useState<RegisterFormData>({
     name: '',
     email: '',
@@ -41,7 +42,7 @@ export function useRegisterForm() {
 
     if (isValid) {
       try {
-        await registerUser(formData.name, formData.email, formData.password);
+        await register(formData.name, formData.email, formData.password);
         navigate('/login');
       } catch (error) {
         console.error('Ошибка при регистрации:', error);
