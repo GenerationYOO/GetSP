@@ -1,0 +1,42 @@
+import "./TaskTable.css";
+import { TaskTableRow } from "./TaskTableRow";
+import type { TaskTableRowData } from "./taskTable.types";
+
+type TaskTableProps = {
+  tasks: TaskTableRowData[];
+  onTaskClick?: (task: TaskTableRowData) => void;
+};
+
+export function TaskTable({ tasks, onTaskClick }: TaskTableProps) {
+  return (
+    <div className="taskTableWrapper">
+      <table className="taskTable">
+        <colgroup>
+          <col className="taskTableIdColumn" />
+          <col className="taskTableTitleColumn" />
+          <col className="taskTableDescriptionColumn" />
+          <col className="taskTablePriorityColumn" />
+          <col className="taskTableActionsColumn" />
+        </colgroup>
+        <thead>
+          <tr className="taskTableHeader">
+            <th>ID</th>
+            <th>ЗАГОЛОВОК И ТЕГИ</th>
+            <th>ОПИСАНИЕ</th>
+            <th>ПРИОРИТЕТ</th>
+            <th>ДЕЙСТВИЯ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tasks.map((task) => (
+            <TaskTableRow
+              key={task.id}
+              task={task}
+              onTaskClick={onTaskClick}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

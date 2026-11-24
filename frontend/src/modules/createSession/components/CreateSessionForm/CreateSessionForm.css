@@ -1,0 +1,16 @@
+.createSessionForm{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+.createSessionTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.createSessionFormError {
+  color: var(--color-error);
+  text-align: center;
+  font-size: 14px;
+}

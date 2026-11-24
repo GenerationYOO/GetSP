@@ -1,21 +1,21 @@
 import "./DevKit.css"
-import { ActionButton } from "../../components/ActionButton/ActionButton"
-import { AuthSwitch } from "../../components/AuthSwitch/AuthSwitch"
-import { Checkbox } from "../../components/Checkbox/Checkbox"
-import { InputForm } from "../../components/InputForm/InputForm"
-import { Header } from "../../components/Header/Header"
-import { FormContainer } from "../../components/FormContainer/FormContainer"
-import { HomePageButton } from "../../components/HomePageButton/HomePageButton"
-import { PageLayout } from "../../components/PageLayout/PageLayout"
-import { SpreadsheetUploader } from "../../components/SpreadsheetUploader/SpreadsheetUploader"
-import { SurfaceCard } from "../../components/SurfaceCard/SurfaceCard"
-import { TaskPreviewBlock } from "../../components/TaskPreviewBlock/TaskPreviewBlock"
-import { TaskTable } from "../../components/TaskTable/TaskTable"
-import { TaskTags } from "../../components/TaskTags/TaskTags"
-import { ThemeToggle } from "../../components/ThemeToggle/ThemeToggle"
-import { UploadButton } from "../../components/UploadButton/UploadButton"
-import eyeIcon from "../../assets/icons/eye.svg"
-import createSessionIcon from "../../assets/icons/createSession.svg"
+import { ActionButton } from "../../shared/components/ActionButton/ActionButton"
+import { AuthSwitch } from "../../shared/components/AuthSwitch/AuthSwitch"
+import { Checkbox } from "../../shared/components/Checkbox/Checkbox"
+import { InputForm } from "../../shared/components/InputForm/InputForm"
+import { Header } from "../../shared/components/Header/Header"
+import { FormContainer } from "../../shared/components/FormContainer/FormContainer"
+import { HomePageButton } from "../../shared/components/HomePageButton/HomePageButton"
+import { PageLayout } from "../../shared/components/PageLayout/PageLayout"
+import { SpreadsheetUploader } from "../../shared/components/SpreadsheetUploader/SpreadsheetUploader"
+import { SurfaceCard } from "../../shared/components/SurfaceCard/SurfaceCard"
+import { TaskPreviewBlock } from "../../shared/components/TaskPreviewBlock/TaskPreviewBlock"
+import { TaskTable } from "../../shared/components/TaskTable/TaskTable"
+import { TaskTags } from "../../shared/components/TaskTags/TaskTags"
+import { ThemeToggle } from "../../shared/components/ThemeToggle/ThemeToggle"
+import { UploadButton } from "../../shared/components/UploadButton/UploadButton"
+import eyeIcon from "../../shared/assets/icons/eye.svg"
+import createSessionIcon from "../../shared/assets/icons/createSession.svg"
 import { useState } from "react"
 
 export function DevKit() {
@@ -158,7 +158,6 @@ export function DevKit() {
           <SpreadsheetUploader
             title="Загрузите таблицу"
             selectedFile={selectedFile}
-            setSelectedFile={setSelectedFile}
             onFileSelect={setSelectedFile}
           />
         </article>
