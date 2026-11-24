@@ -1,4 +1,4 @@
-import { api } from "../../../shared/api/axios";
+import { api } from "../../../shared/api/api";
 import type { ImportPreviewResponse } from "../models/createSessionForm";
 
 export async function previewImport(

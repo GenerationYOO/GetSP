@@ -5,9 +5,15 @@ import { DevKit } from "./pages/DevKit/DevKit";
 import { SessionCreation } from "./pages/CreateSession/CreateSession";
 import { TaskPreview } from "./pages/TaskPreview/TaskPreview";
 import { Home } from "./pages/Home/Home";
+import { useAuth } from "./shared/auth/useAuth";
 import './App.css'
 
 function App() {
+  const { status } = useAuth();
+
+  if (status === "loading") {
+    return <div role="status">Загрузка...</div>;
+  }
 
   return (
     <BrowserRouter basename="">

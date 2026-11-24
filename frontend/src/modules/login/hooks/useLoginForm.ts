@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { isAxiosError } from 'axios'
-import { loginUser } from '../api/login'
+import { useAuth } from '../../../shared/auth/useAuth'
 import { getBackendErrors, validateForm } from '../models/loginValidation'
 import type { LoginFormData, LoginFormErrors, LoginValidationErrors } from '../models/loginForm'
 
 export function useLoginForm() {
   const navigate = useNavigate()
+  const { login } = useAuth()
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
@@ -28,7 +29,7 @@ export function useLoginForm() {
 
     if (isValid) {
       try {
-        await loginUser(
+        await login(
           formData.email,
           formData.password,
           formData.rememberMe
