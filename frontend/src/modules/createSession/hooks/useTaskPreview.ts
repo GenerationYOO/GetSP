@@ -10,19 +10,27 @@ export function useTaskPreview() {
   const navigate = useNavigate();
   const location = useLocation();
   const [state] = useState<TaskPreviewLocationState | null>(() => {
-    if (location.state) {
-      return location.state as TaskPreviewLocationState;
-    }
+    const navigationState =
+      location.state as TaskPreviewLocationState | null;
 
     try {
       const saved = sessionStorage.getItem(PREVIEW_STORAGE_KEY);
-      return saved
-        ? JSON.parse(saved) as TaskPreviewLocationState
-        : null;
+
+      if (saved) {
+        const savedState = JSON.parse(saved) as TaskPreviewLocationState;
+
+        if (
+          !navigationState ||
+          savedState.data.importId === navigationState.data.importId
+        ) {
+          return savedState;
+        }
+      }
     } catch (error) {
       console.error("Не удалось восстановить предпросмотр задач:", error);
-      return null;
     }
+
+    return navigationState;
   });
   const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
   const [selectedTask, setSelectedTask] = useState<ImportedTask | null>(null);
