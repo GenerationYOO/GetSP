@@ -3,16 +3,16 @@ import { TaskPreviewBlock } from "../../../../shared/components/TaskPreviewBlock
 import { TaskTable } from "../../../../shared/components/TaskTable/TaskTable";
 import { ActionButton } from "../../../../shared/components/ActionButton/ActionButton";
 import { getPriorityLabel } from "../../../../shared/utils/taskPriority";
-import { TaskEditModal } from "../../../../shared/components/TaskEditModal/TaskEditModal";
+import { TaskEditModal } from "../TaskEditModal/TaskEditModal";
 import { useTaskPreview } from "../../hooks/useTaskPreview";
 
 export function TaskPreviewWorkspace() {
   const {
     viewMode,
     state,
+    data,
     sessionName,
     selectedTask,
-    data,
     switchViewMode,
     openTask,
     closeTask,
@@ -78,7 +78,7 @@ export function TaskPreviewWorkspace() {
                 id={task.externalId}
                 priority={getPriorityLabel(task.priority)}
                 title={task.title.slice(0, 40)
-                   + (task.title.length > 40 ? "..." : "")}
+                  + (task.title.length > 40 ? "..." : "")}
                 description={task.description}
                 tags={task.tags}
               />
@@ -90,7 +90,7 @@ export function TaskPreviewWorkspace() {
               id: task.externalId,
               priority: getPriorityLabel(task.priority),
               title: task.title.slice(0, 40)
-               + (task.title.length > 40 ? "..." : ""),
+                + (task.title.length > 40 ? "..." : ""),
               description: task.description,
               tags: task.tags
             }))}

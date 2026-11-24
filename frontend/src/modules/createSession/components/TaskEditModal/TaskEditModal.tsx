@@ -1,14 +1,14 @@
 import "./TaskEditModal.css";
-import { SurfaceCard } from "../SurfaceCard/SurfaceCard";
-import type { ImportedTask } from "../../../modules/createSession";
-import { ActionButton } from "../ActionButton/ActionButton";
-import { TaskEditInputForm } from "../TaskEditInputForm/TaskEditInputForm";
-import { TaskEditTextArea } from "../TaskEditTextArea/TaskEditTextArea";
-import { TaskEditTag } from "../TaskEditTag/TaskEditTag";
-import { TaskEditPriority } from "../TaskEditPriority/TaskEditPriority";
-import { getPriorityLabel, getPriorityValue } from "../../utils/taskPriority";
-import { useState } from "react";
-import pencil from "../../assets/icons/pencil.svg"
+import { SurfaceCard } from "../../../../shared/components/SurfaceCard/SurfaceCard";
+import type { ImportedTask } from "../../models/createSessionForm";
+import { ActionButton } from "../../../../shared/components/ActionButton/ActionButton";
+import { TaskEditInputForm } from "./TaskEditInputForm/TaskEditInputForm";
+import { TaskEditTextArea } from "./TaskEditTextArea/TaskEditTextArea";
+import { TaskEditTag } from "./TaskEditTag/TaskEditTag";
+import { TaskEditPriority } from "./TaskEditPriority/TaskEditPriority";
+import { getPriorityLabel } from "../../../../shared/utils/taskPriority";
+import pencil from "../../../../shared/assets/icons/pencil.svg";
+import { useTaskEditModal } from "../../hooks/useTaskEditModal";
 
 type TaskEditModalProps = {
   task: ImportedTask;
@@ -17,32 +17,23 @@ type TaskEditModalProps = {
 };
 
 export function TaskEditModal({ task, onClose, onSave }: TaskEditModalProps) {
-  const [draft, setDraft] = useState<ImportedTask>(task);
-  const [tagInput, setTagInput] = useState("");
-
-  function addTag() {
-    const tag = tagInput.trim().replace(/^#/, "");
-
-    if (!tag || draft.tags.includes(tag)) {
-      return;
-    }
-
-    setDraft((current) => ({
-      ...current,
-      tags: [...current.tags, tag],
-    }));
-
-    setTagInput("");
-  }
+  const {
+    draft,
+    tagInput,
+    setTagInput,
+    handleChangeTitle,
+    handleChangeDescription,
+    handleChangePriority,
+    handleAddTag,
+    handleRemoveTag,
+    handleSave,
+    handleOverlayClick
+  } = useTaskEditModal(task, onClose, onSave);
 
   return (
     <div
       className="taskEditModalOverlay"
-      onClick={(event) => {
-        if (event.target === event.currentTarget) {
-          onClose();
-        }
-      }}>
+      onClick={(event) => handleOverlayClick(event)}>
       <SurfaceCard className="taskEditModalContent">
         <header className="taskEditModalHeader">
           <span className="taskEditModalTaskId">{task.externalId}</span>
@@ -57,35 +48,29 @@ export function TaskEditModal({ task, onClose, onSave }: TaskEditModalProps) {
             type="text"
             placeholder="Введите название"
             value={draft.title}
-            onChange={(value) => (setDraft((prev) => ({ ...prev, title: value })))}
+            onChange={(value) => handleChangeTitle(value)}
             leftIcon={pencil}
           />
           <TaskEditPriority
             value={getPriorityLabel(draft.priority)}
             onChange={(priority) =>
-              setDraft((prev) => ({
-                ...prev,
-                priority: getPriorityValue(priority)
-              }))
+              handleChangePriority(priority)
             }
           />
           <TaskEditTextArea
             title="Описание задачи"
             value={draft.description}
             placeholder="Введите описание"
-            onChange={(value) => (setDraft((prev) => ({ ...prev, description: value })))}
+            onChange={(value) => handleChangeDescription(value)}
           />
           <TaskEditTag
             title="Теги"
             tags={draft.tags}
             tagInput={tagInput}
             setTagInput={setTagInput}
-            addTag={addTag}
+            addTag={handleAddTag}
             onRemoveTag={(index) =>
-              setDraft((current) => ({
-                ...current,
-                tags: current.tags.filter((_, tagIndex) => tagIndex !== index),
-              }))
+              handleRemoveTag(index)
             }
           />
         </div>
@@ -100,7 +85,7 @@ export function TaskEditModal({ task, onClose, onSave }: TaskEditModalProps) {
             type="button"
             className="taskEditModalFooterStartButton"
             text="Сохранить изменения"
-            onClick={() => onSave(draft)}
+            onClick={() => handleSave()}
           />
         </footer>
       </SurfaceCard>

@@ -1,6 +1,6 @@
 import "./TaskEditPriority.css";
-import "../../styles/taskPriority.css";
-import { getPriorityClassName } from "../../utils/taskPriority";
+import "../../../../../shared/styles/taskPriority.css";
+import { getPriorityClassName } from "../../../../../shared/utils/taskPriority";
 
 const priorities = [
   "Неотложная",

@@ -125,7 +125,6 @@ export function useLoginForm() {
   }
 
   return {
-    navigate,
     formData,
     errors,
     formError,

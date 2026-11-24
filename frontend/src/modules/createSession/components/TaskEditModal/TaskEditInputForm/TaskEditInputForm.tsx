@@ -1,5 +1,5 @@
 import "./TaskEditInputForm.css"
-import { InputForm } from "../InputForm/InputForm";
+import { InputForm } from "../../../../../shared/components/InputForm/InputForm";
 
 type TaskEditInputFormProps = {
   title: string;
@@ -20,7 +20,7 @@ type TaskEditInputFormProps = {
   onBlur?: () => void;
 }
 
-export function TaskEditInputForm({...props }: TaskEditInputFormProps) {
+export function TaskEditInputForm({ ...props }: TaskEditInputFormProps) {
   return (
     <InputForm
       className="taskEditInputForm"
