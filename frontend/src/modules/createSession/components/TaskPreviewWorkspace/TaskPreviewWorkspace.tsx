@@ -11,13 +11,15 @@ export function TaskPreviewWorkspace() {
     viewMode,
     state,
     data,
+    formError,
     sessionName,
     selectedTask,
     switchViewMode,
     openTask,
     closeTask,
     saveTask,
-    goBack
+    goBack,
+    handleCreateSession
   } = useTaskPreview();
 
   if (!state) {
@@ -118,8 +120,14 @@ export function TaskPreviewWorkspace() {
           type="button"
           className="taskPreviewFooterStartButton"
           text="Начать сессию"
+          onClick={() => handleCreateSession(sessionName)}
         />
       </footer>
+      {formError && (
+        <p className="taskPreviewError" role="alert">
+          {formError}
+        </p>
+      )}
       {selectedTask && (
         <TaskEditModal
           task={selectedTask}
