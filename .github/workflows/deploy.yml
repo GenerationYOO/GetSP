@@ -19,12 +19,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            # Переходим в папку проекта
             cd /var/www/getsp
-            # Принудительно обновляем код до состояния в ветке main
             git fetch origin main
             git reset --hard origin/main
-            # Пересобираем и запускаем контейнеры в фоне
             docker compose up -d --build
-            # Чистим старые образы, чтобы не забивать диск
-            docker image prune -f
+            docker image prune -a -f --filter "until=24h"
+            docker builder prune -f --keep-storage 3GB
