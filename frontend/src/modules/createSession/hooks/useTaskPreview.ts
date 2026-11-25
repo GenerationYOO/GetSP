@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { isAxiosError } from "axios";
 import type { ImportPreviewResponse, ImportedTask } from "../models/createSessionForm";
 import type { TaskPreviewLocationState } from "../models/taskPreview";
+import { createSession } from "../api/createSession";
 
 
 const PREVIEW_STORAGE_KEY = "getsp:task-preview";
@@ -34,6 +36,7 @@ export function useTaskPreview() {
   });
   const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
   const [selectedTask, setSelectedTask] = useState<ImportedTask | null>(null);
+  const [formError, setFormError] = useState<string>();
   const [data, setData] = useState<ImportPreviewResponse>(
     state?.data ?? {
       importId: "",
@@ -85,16 +88,58 @@ export function useTaskPreview() {
     navigate("/create-session");
   }
 
+  function handleCreateSession(name: string) {
+    if (!state) {
+      console.error("Нет данных для создания сессии.");
+      setFormError("Нет данных для создания сессии.");
+      return;
+    }
+
+    setFormError(undefined);
+
+    const form = {
+      name,
+      importId: data.importId,  
+      tasks: data.tasks,
+    };
+
+    createSession(form)
+      .then((response) => {
+        sessionStorage.removeItem(PREVIEW_STORAGE_KEY);
+        navigate(`/sessions/${response.sessionId}`, { state: response });
+      })
+      .catch((error) => {
+        console.error("Ошибка при создании сессии:", error);
+
+        if (isAxiosError(error)) {
+          const responseData = error.response?.data as
+            | { message?: string; detail?: string; title?: string }
+            | undefined;
+
+          setFormError(
+            responseData?.detail ||
+            responseData?.message ||
+            responseData?.title ||
+            "Не удалось создать сессию."
+          );
+        } else {
+          setFormError("Не удалось создать сессию.");
+        }
+      });
+  }
+
   return {
     viewMode,
     state,
     sessionName: state?.sessionName ?? "",
     selectedTask,
     data,
+    formError,
     switchViewMode,
     openTask,
     closeTask,
     saveTask,
     goBack,
+    handleCreateSession,
   };
 }

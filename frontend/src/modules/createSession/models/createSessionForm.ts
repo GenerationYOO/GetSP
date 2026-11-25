@@ -31,3 +31,16 @@ export type ImportPreviewResponse = {
   warnings: string[];
 }
 
+export type CreateSessionResponse = {
+  sessionId: string,
+  sessionName: string,
+  inviteCode: string,
+  inviteLink: string,
+  qrCodeBase64: string,
+}
+
+export type CreateSessionForm = {
+  name: string;
+  importId: string;
+  tasks: ImportedTask[];
+}
