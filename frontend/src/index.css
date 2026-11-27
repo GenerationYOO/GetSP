@@ -45,6 +45,7 @@
   /* Фон и поверхности */
   --color-page-background: #EDEDED;
   --color-surface: #FFFFFF;
+  --color-background-input: #F3F4F6;
 
   /* Текст */
   --color-text-primary: #000000;
