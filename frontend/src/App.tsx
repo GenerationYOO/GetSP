@@ -7,6 +7,7 @@ import { TaskPreview } from "./pages/TaskPreview/TaskPreview";
 import { Home } from "./pages/Home/Home";
 import { useAuth } from "./shared/auth/useAuth";
 import { SessionDetails } from "./pages/SessionDetails/SessionDetails";
+import { JoinSession } from "./pages/JoinSession/JoinSession";
 import './App.css'
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/create-session/preview" element={<TaskPreview />} />
         <Route path="/" element={<Home />} />
         <Route path="/sessions/:sessionId" element={<SessionDetails />} />
+        <Route path="/join-session" element={<JoinSession />} />
       </Routes>
     </BrowserRouter>
   )
